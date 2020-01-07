@@ -15,7 +15,3 @@ def rootAnswer(request):
     result['data'] = serializer.data
 
     return Response(data=result, status=status.HTTP_200_OK)
-
-
-
-
