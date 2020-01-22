@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path,re_path
 from django.views.static import serve
 from psite import settings
+from app01 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('static/(?P<path>.*)', serve, {'document_root': settings.STATIC_ROOT }),
+    path('users/', views.users ),
+    path('students/', views.StudentsView.as_view() )
 ]

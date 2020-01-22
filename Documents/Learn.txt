@@ -1,3 +1,5 @@
+https://www.bilibili.com/video/av28871471?p=2
+
 // 原因是.gitignore只能忽略那些原来没有被追踪的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。
 git rm -r --cached .
 git add .
