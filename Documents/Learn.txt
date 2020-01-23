@@ -1,8 +1,12 @@
-<<<<<<< HEAD
-D:\workshop\document\200123a_psite>git remote add github_psite https://github.com/pearcore/psite.git
 
-=======
->>>>>>> eff6a97e95df5cf675a20577a49bff0d3fb2d6e6
+添加 git 第二地址
+
+D:\workshop\document\200123a_psite>git remote add github https://github.com/pearcore/psite.git
+git pull github master --allow-unrelated-histories
+git add *
+git commit -m "XXXXX"
+git push github
+
 https://www.bilibili.com/video/av28871471?p=2
 
 // 原因是.gitignore只能忽略那些原来没有被追踪的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。
