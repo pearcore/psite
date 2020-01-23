@@ -1,7 +1,8 @@
 
-添加 git 第二地址
 
+添加 git 第二地址
 D:\workshop\document\200123a_psite>git remote add github https://github.com/pearcore/psite.git
+git@git.code.tencent.com:pearcore/psite.git
 git pull github master --allow-unrelated-histories
 git add *
 git commit -m "XXXXX"
