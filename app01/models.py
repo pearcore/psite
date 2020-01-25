@@ -8,7 +8,7 @@ class UserInfo(models.Model):
     )
 
     user_type = models.IntegerField(choices= user_type_choices)
-    user_name = models.CharField(max_length=32)
+    user_name = models.CharField(max_length=32,unique=True)
     password = models.CharField(max_length=64)
 
 class UserToken(models.Model):
