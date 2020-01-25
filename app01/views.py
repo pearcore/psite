@@ -1,32 +1,33 @@
-from django.shortcuts import render,HttpResponse
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from app01 import models
 
-# def md5(user):
-#     import hashlib
-#     import time
-#     ctime = ctime(time.time())
-#     m = hashlib.md5( bytes(user , encoding = 'utf-8'))
-#     m.update ( bytes(ctime , encoding = 'utf-8' ))
-#     return m.hexdigest
+def md5(user):
+    import hashlib
+    import time
+    ctime = str(time.time())
+    m = hashlib.md5( bytes(user , encoding='utf-8'))
+    m.update ( bytes(ctime , encoding='utf-8' ))
+    return m.hexdigest
 
 class AuthView(APIView):
     def post(self, request , *args, **kwargs):
-        # try: 
-        #     ret = { 'code':1000, 'msg':'成功!'}
-        #     user = request._request.POST.get("username")
-        #     pwd = request._request.POST.get("password")
-        #     obj = models.UserInfo.objects.filter(username=user,password=pwd).first()
-        #     if not obj :
-        #         ret['code'] = 1001
-        #         ret['msg'] = '没成功!'
-        #     #token = md5(user)
-        #     #models.UserToken.objects.update_or_create(user=obj , default = ('token':token))
-        # except Exception as e:
-        #     pass
+        try: 
+            ret = { 'code':1000, 'msg':'成功!'}
+            user = request._request.POST.get('username')
+            pwd = request._request.POST.get('password')
+            print (user)
+            obj = models.UserInfo.objects.filter(user_name=user,password=pwd).first()
+            if not obj :
+                ret['code'] = 1001
+                ret['msg'] = '没成功!'
+            token = md5(user)
+            models.UserToken.objects.update_or_create(user = obj , defaults = {'token':token})
+
+        except Exception as e:
+           pass
         
-        return HttpResponse("kdkdkd")
+        return JsonResponse(ret)
 
 
 # import json
