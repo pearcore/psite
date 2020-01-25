@@ -21,7 +21,7 @@ git commit -m 'update .gitignore'
 修改为
         with Path(CURRENT_DIR, 'templates', 'technical_500.html').open(encoding='utf-8') as fh:
 
-python -m  venv lhvirenv 建立虚拟空间
+python -m  venv lhvenv 建立虚拟空间
 runve 我的运行虚拟空间
 (.\lhvirenv\Scripts\activate.bat) 其实也就是这个运行
 pip install django==2.1.8 2.2 好像有问题, 暂时运行2.1.8
