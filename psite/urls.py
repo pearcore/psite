@@ -25,5 +25,9 @@ urlpatterns = [
     re_path('static/(?P<path>.*)', serve, {'document_root': settings.STATIC_ROOT }),
     #path('users/', views.users ),
     #path('students/', views.StudentsView.as_view() )
-    url(r'^api/v1/auth/$' , views.AuthView.as_view() )
+    url(r'^api/v1/auth/$' , views.AuthView.as_view()),
+    url(r'^api/v1/order/$' , views.OrderView.as_view()),
+    url(r'^api/v1/userinfo/$' , views.UserInfoView.as_view()),
+    url(r'^api/v1/users/$' , views.UsersView.as_view()),
+
 ]
