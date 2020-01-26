@@ -4,6 +4,9 @@ from app01 import models
 from rest_framework import exceptions
 from rest_framework.authentication import BasicAuthentication
 from django.core import serializers
+from psite.LHStand import LHKit
+from django.db.models import Q
+import json
 
 def md5(user):
     import hashlib
@@ -12,6 +15,7 @@ def md5(user):
     m = hashlib.md5( bytes(user , encoding='utf-8'))
     m.update ( bytes(ctime , encoding='utf-8' ))
     return m.hexdigest
+
 Order_Dict = {
     1:{
         'Name':'手纸',
@@ -81,22 +85,6 @@ class OrderView(APIView):
             pass
         return JsonResponse(ret)
 
-
-# def convert_to_dicts(objs):
-#     '''把对象列表转换为字典列表'''
-#     obj_arr = []
-     
-#     for o in objs:
-#         # 把Object对象转换成Dict
-#         dict = {}
-#         dict.update(o.__dict__)
-#         dict.pop("_state", None)#去除掉多余的字段
-#         obj_arr.append(dict)
-     
-#     return obj_arr
-
-import json
-
 class UserInfoView(APIView):
     authentication_classes = [ PsiteAuthentication, ]
     def post(self, request , *args, **kwargs):
@@ -106,8 +94,7 @@ class UserInfoView(APIView):
         except Exception as e :
             pass
         return JsonResponse(ret)
-from psite.LHStand import LHKit
-from django.db.models import Q
+
 class UsersView(APIView):
     def post(self, request , *args, **kwargs):
         ret = LHKit.LHResult()
