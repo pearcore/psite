@@ -2,10 +2,9 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from app01 import models
 from rest_framework import exceptions
-from rest_framework.authentication import BasicAuthentication
-from django.core import serializers
 from psite.LHStand import LHKit
 from django.db.models import Q
+from app01.utils.auth import FirstAuthentication,PsiteAuthentication
 import json
 
 def md5(user):
@@ -14,7 +13,7 @@ def md5(user):
     ctime = str(time.time())
     m = hashlib.md5( bytes(user , encoding='utf-8'))
     m.update ( bytes(ctime , encoding='utf-8' ))
-    return m.hexdigest
+    return m.hexdigest()
 
 Order_Dict = {
     1:{
@@ -41,38 +40,27 @@ Order_Dict = {
 }
 
 class AuthView(APIView):
+    authentication_classes = []
     def post(self, request , *args, **kwargs):
         try: 
-            ret = { 'code':1001, 'msg':'成功!'}
+            ret = LHKit.LHResult()
             user = request._request.POST.get('username')
             pwd = request._request.POST.get('password')
-            print (user)
             obj = models.UserInfo.objects.filter(user_name=user,password=pwd).first()
             if not obj :
                 ret['code'] = 1001
                 ret['msg'] = '没成功!'
             token = md5(user)
             models.UserToken.objects.update_or_create(user = obj , defaults = {'token':token})
-            ret ['token'] = token
+            ret ['data'] = token
         except Exception as e:
             ret['code'] = 1002
             ret['msg'] = '出现了异常,请联系管理员'
         
         return JsonResponse(ret)
 
-class PsiteAuthentication(object):
-    def authenticate(self, request):
-        token = request._request.POST.get('token')
-        token_obj = models.UserToken.objects.filter(token=token).first()
-        if not token_obj :
-            raise exceptions.AuthenticationFailed('用户认证失败')
-        return (token_obj.user , token_obj)
-    def authenticate_header(self,request):
-        pass
-
-
 class OrderView(APIView):
-    authentication_classes = [ PsiteAuthentication, ]
+    #authentication_classes = [ FirstAuthentication, ]
     def post(self, request , *args, **kwargs):
         ret = {
             "code":1000,
@@ -86,8 +74,9 @@ class OrderView(APIView):
         return JsonResponse(ret)
 
 class UserInfoView(APIView):
-    authentication_classes = [ PsiteAuthentication, ]
+    authentication_classes = [ FirstAuthentication, ]
     def post(self, request , *args, **kwargs):
+        print( request.user )
         ret = LHKit.LHResult()
         try:
             ret['data'] = LHKit.object_to_JSON( request.user )

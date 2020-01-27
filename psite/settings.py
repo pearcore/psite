@@ -122,3 +122,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES":[
+        "app01.utils.auth.FirstAuthentication",
+        #"app01.utils.auth.PsiteAuthentication",
+    ],
+    #"UNAUTHENTICATED_USER": lambda: "临时用户!",
+    "UNAUTHENTICATED_USER": None,
+    "UNAUTHENTICATED_TOKEN": None,
+}
