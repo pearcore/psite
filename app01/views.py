@@ -5,6 +5,7 @@ from rest_framework import exceptions
 from psite.LHStand import LHKit
 from django.db.models import Q
 from app01.utils.auth import FirstAuthentication,PsiteAuthentication
+from app01.utils.permission import LHPermission
 import json
 
 def md5(user):
@@ -35,8 +36,7 @@ Order_Dict = {
         'Name':'test',
         'Number':40,
         'Content':'testtest',
-    },
-    
+    }, 
 }
 
 class AuthView(APIView):
@@ -60,21 +60,17 @@ class AuthView(APIView):
         return JsonResponse(ret)
 
 class OrderView(APIView):
-    #authentication_classes = [ FirstAuthentication, ]
+    permission_classes = [LHPermission,]
     def post(self, request , *args, **kwargs):
-        ret = {
-            "code":1000,
-            "msg":"成功!",
-            "data":"",
-        }
+        ret = LHKit.LHResult()
         try:
+            print (request.user.user_type)
             ret['data'] = Order_Dict
         except Exception as e :
             pass
         return JsonResponse(ret)
 
 class UserInfoView(APIView):
-    authentication_classes = [ FirstAuthentication, ]
     def post(self, request , *args, **kwargs):
         print( request.user )
         ret = LHKit.LHResult()
