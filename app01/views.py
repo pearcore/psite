@@ -5,7 +5,7 @@ from rest_framework import exceptions
 from psite.LHStand import LHKit
 from django.db.models import Q
 from app01.utils.auth import FirstAuthentication,PsiteAuthentication
-from app01.utils.permission import LHPermission
+from app01.utils.permission import SVIPPermission
 import json
 
 def md5(user):
@@ -60,7 +60,7 @@ class AuthView(APIView):
         return JsonResponse(ret)
 
 class OrderView(APIView):
-    permission_classes = [LHPermission,]
+    permission_classes = [SVIPPermission,]
     def post(self, request , *args, **kwargs):
         ret = LHKit.LHResult()
         try:
