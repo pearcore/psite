@@ -131,5 +131,5 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
     "UNAUTHENTICATED_TOKEN": None,
 
-    #"DEFAULT_PERMISSION_CLASSES":[],
+    #"DEFAULT_PERMISSION_CLASSES":["app01.utils.permission.NormalPermission"],
 }

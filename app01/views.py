@@ -5,8 +5,10 @@ from rest_framework import exceptions
 from psite.LHStand import LHKit
 from django.db.models import Q
 from app01.utils.auth import FirstAuthentication,PsiteAuthentication
-from app01.utils.permission import SVIPPermission
+from app01.utils.permission import SVIPPermission,NormalPermission
+from app01.utils.throttle import LHThrottle
 import json
+
 
 def md5(user):
     import hashlib
@@ -41,6 +43,8 @@ Order_Dict = {
 
 class AuthView(APIView):
     authentication_classes = []
+    permission_classes = []
+    throttle_classes = [LHThrottle,]
     def post(self, request , *args, **kwargs):
         try: 
             ret = LHKit.LHResult()
@@ -71,6 +75,7 @@ class OrderView(APIView):
         return JsonResponse(ret)
 
 class UserInfoView(APIView):
+    permission_classes = [NormalPermission,]
     def post(self, request , *args, **kwargs):
         print( request.user )
         ret = LHKit.LHResult()
