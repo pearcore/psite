@@ -1,10 +1,10 @@
-from rest_framework.throttling import BaseThrottle
+from rest_framework.throttling import BaseThrottle,SimpleRateThrottle
 import time
 Vist_Record = {
 
 }
 
-class LHThrottle(object):
+class LHThrottle(BaseThrottle):
     def __init__(self):
         self.history = None
 
@@ -18,7 +18,7 @@ class LHThrottle(object):
         else :
             history = Vist_Record.get(remote_addr)
             self.history = history
-            while history and history[-1] < (ctime - 60) :
+            while history and history[-1] < (ctime - 10) :
                 history.pop()
             if len(history) >= 3 :
                 rtAllow = False
@@ -27,7 +27,18 @@ class LHThrottle(object):
                 rtAllow = True
         return rtAllow
     def wait(self):
-        rt = 60 
+        rt = 10 
         ctime = time.time()
-        rt = 60 - ( ctime - self.history[-1] )
+        rt = 10 - ( ctime - self.history[-1] )
         return rt
+
+
+class PSiteIPThrottle(SimpleRateThrottle):
+    scope = "PSiteIPThrottleRate"
+    def get_cache_key(self,request,view):
+        return self.get_ident(request)
+
+class PSiteUserThrottle(SimpleRateThrottle):
+    scope = "PSiteUserThrottleRate"
+    def get_cache_key(self,request,view):
+        return request.user.user_name

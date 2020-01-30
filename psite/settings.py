@@ -132,4 +132,9 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_TOKEN": None,
 
     #"DEFAULT_PERMISSION_CLASSES":["app01.utils.permission.NormalPermission"],
+    "DEFAULT_THROTTLE_CLASSES":["app01.utils.throttle.PSiteUserThrottle",], 
+    "DEFAULT_THROTTLE_RATES":{
+        "PSiteIPThrottleRate":"2/m",
+        "PSiteUserThrottleRate":"3/m",
+    }, 
 }

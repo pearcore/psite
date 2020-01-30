@@ -6,7 +6,7 @@ from psite.LHStand import LHKit
 from django.db.models import Q
 from app01.utils.auth import FirstAuthentication,PsiteAuthentication
 from app01.utils.permission import SVIPPermission,NormalPermission
-from app01.utils.throttle import LHThrottle
+from app01.utils.throttle import PSiteIPThrottle,PSiteUserThrottle
 import json
 
 
@@ -44,7 +44,7 @@ Order_Dict = {
 class AuthView(APIView):
     authentication_classes = []
     permission_classes = []
-    throttle_classes = [LHThrottle,]
+    throttle_classes = [PSiteIPThrottle,]
     def post(self, request , *args, **kwargs):
         try: 
             ret = LHKit.LHResult()
