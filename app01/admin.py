@@ -1,8 +1,8 @@
 from django.contrib import admin
+from .models import UserInfo,UserToken,UserRole,UserGroup
 
-# Register your models here.
-from .models import UserInfo,UserToken
-
-# admin.site.register(Question)
 admin.site.register(UserInfo)
 admin.site.register(UserToken)
+
+admin.site.register(UserRole)
+admin.site.register(UserGroup)

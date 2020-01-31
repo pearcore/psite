@@ -8,7 +8,9 @@ from app01.utils.auth import FirstAuthentication,PsiteAuthentication
 from app01.utils.permission import SVIPPermission,NormalPermission
 from app01.utils.throttle import PSiteIPThrottle,PSiteUserThrottle
 import json
+from django.urls import reverse
 
+#from rest_framework.versioning import URLPathVersioning
 
 def md5(user):
     import hashlib
@@ -45,6 +47,7 @@ class AuthView(APIView):
     authentication_classes = []
     permission_classes = []
     throttle_classes = [PSiteIPThrottle,]
+    #versioning_class = URLPathVersioning
     def post(self, request , *args, **kwargs):
         try: 
             ret = LHKit.LHResult()
@@ -57,6 +60,13 @@ class AuthView(APIView):
             token = md5(user)
             models.UserToken.objects.update_or_create(user = obj , defaults = {'token':token})
             ret ['data'] = token
+            ret ['Ver'] = request.version
+            # if request.version == 'v2' :
+            #     ret ['ADD'] = '新添加一点东西!'
+            # u1 = request.versioning_scheme.reverse(viewname='uuu',request=request)
+            # u2 = reverse(viewname = 'uuu',kwargs= {'version':request.version})
+
+
         except Exception as e:
             ret['code'] = 1002
             ret['msg'] = '出现了异常,请联系管理员'

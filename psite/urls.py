@@ -18,16 +18,17 @@ from django.urls import path,re_path
 from django.views.static import serve
 from psite import settings
 from app01 import views
-from django.conf.urls import url
+from django.conf.urls import url,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('static/(?P<path>.*)', serve, {'document_root': settings.STATIC_ROOT }),
     #path('users/', views.users ),
     #path('students/', views.StudentsView.as_view() )
-    url(r'^api/v1/auth/$' , views.AuthView.as_view()),
-    url(r'^api/v1/order/$' , views.OrderView.as_view()),
-    url(r'^api/v1/userinfo/$' , views.UserInfoView.as_view()),
-    url(r'^api/v1/users/$' , views.UsersView.as_view()),
 
+    #url(r'^api/v1/auth/$' , views.AuthView.as_view()),
+    #url(r'^api/v1/order/$' , views.OrderView.as_view()),
+    #url(r'^api/v1/userinfo/$' , views.UserInfoView.as_view()),
+    #url(r'^api/v1/users/$' , views.UsersView.as_view()),
+    url(r'^api/' , include('app01.urls')),
 ]

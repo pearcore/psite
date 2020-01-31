@@ -134,7 +134,13 @@ REST_FRAMEWORK = {
     #"DEFAULT_PERMISSION_CLASSES":["app01.utils.permission.NormalPermission"],
     "DEFAULT_THROTTLE_CLASSES":["app01.utils.throttle.PSiteUserThrottle",], 
     "DEFAULT_THROTTLE_RATES":{
-        "PSiteIPThrottleRate":"2/m",
-        "PSiteUserThrottleRate":"3/m",
+        "PSiteIPThrottleRate":"20/m",
+        "PSiteUserThrottleRate":"60/m",
     }, 
+
+    "DEFAULT_VERSIONING_CLASS":'rest_framework.versioning.URLPathVersioning',
+    "DEFAULT_VERSION":'v1',
+    "ALLOWED_VERSIONS":['v1','v2'],
+    "VERSION_PARAM":'version',
+
 }
