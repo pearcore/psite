@@ -11,7 +11,10 @@ class FirstAuthentication(BaseAuthentication):
 
 class PsiteAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        token = request._request.POST.get('token')
+        try:
+            token = request.headers['token']
+        except Exception as e:
+            token = ''
         token_obj = models.UserToken.objects.filter(token=token).first()
         if not token_obj :
             raise exceptions.AuthenticationFailed('用户认证失败')

@@ -9,6 +9,7 @@ from app01.utils.permission import SVIPPermission,NormalPermission
 from app01.utils.throttle import PSiteIPThrottle,PSiteUserThrottle
 import json
 from django.urls import reverse
+from rest_framework.parsers import JSONParser,FormParser
 
 #from rest_framework.versioning import URLPathVersioning
 
@@ -48,12 +49,14 @@ class AuthView(APIView):
     permission_classes = []
     throttle_classes = [PSiteIPThrottle,]
     #versioning_class = URLPathVersioning
+    parser_classes = [ JSONParser,]
     def post(self, request , *args, **kwargs):
         try: 
             ret = LHKit.LHResult()
-            user = request._request.POST.get('username')
-            pwd = request._request.POST.get('password')
+            user = request.data['username'] #request._request.POST.get('username')
+            pwd = request.data['password'] #request._request.POST.get('password')
             obj = models.UserInfo.objects.filter(user_name=user,password=pwd).first()
+            print (obj)
             if not obj :
                 ret['code'] = 900
                 ret['msg'] = '查无此人!'
@@ -64,7 +67,7 @@ class AuthView(APIView):
                 #ret ['code'] = 998
                 #ret ['msg'] = '我就说它不成功！'
                 ret ['Ver'] = request.version
-                print (request.body)
+                #print (request.body)
             # if request.version == 'v2' :
             #     ret ['ADD'] = '新添加一点东西!'
             # u1 = request.versioning_scheme.reverse(viewname='uuu',request=request)
@@ -78,7 +81,7 @@ class AuthView(APIView):
         return JsonResponse(ret)
 
 class OrderView(APIView):
-    permission_classes = [SVIPPermission,]
+    permission_classes = []
     def post(self, request , *args, **kwargs):
         ret = LHKit.LHResult()
         try:
@@ -89,7 +92,6 @@ class OrderView(APIView):
         return JsonResponse(ret)
 
 class UserInfoView(APIView):
-    permission_classes = [NormalPermission,]
     def post(self, request , *args, **kwargs):
         print( request.user )
         ret = LHKit.LHResult()
@@ -100,28 +102,22 @@ class UserInfoView(APIView):
         return JsonResponse(ret)
 
 class UsersView(APIView):
+    permission_classes = [SVIPPermission,]
     def post(self, request , *args, **kwargs):
         ret = LHKit.LHResult()
         users = models.UserInfo.objects.filter(~Q(user_name=''))
         jsUsers = LHKit.objects_to_JSON(users)
         ret ['data'] = jsUsers
         return JsonResponse(ret)
-
-class DjangoView(APIView):
-    def post(self,request , *args, **kwargs):
-        rtJson = LHKit.LHResult()
-        return JsonResponse(rtJson)
    
-from rest_framework.parsers import JSONParser,FormParser
-
 class ParserView(APIView):
     authentication_classes = []
-    permission_classes = []
     throttle_classes = [PSiteIPThrottle,]
-    parser_classes = [ JSONParser,FormParser,]
+    #parser_classes = [ JSONParser,FormParser,]
     def post(self,request , *args, **kwargs):
-        print(request.data)
+        #print(request.headers['token'])
         rtJson = LHKit.LHResult()
+        rtJson['data'] = request.data['age']
         return JsonResponse(rtJson)
 
 # import json
