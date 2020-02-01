@@ -64,6 +64,7 @@ class AuthView(APIView):
                 #ret ['code'] = 998
                 #ret ['msg'] = '我就说它不成功！'
                 ret ['Ver'] = request.version
+                print (request.body)
             # if request.version == 'v2' :
             #     ret ['ADD'] = '新添加一点东西!'
             # u1 = request.versioning_scheme.reverse(viewname='uuu',request=request)
@@ -108,6 +109,18 @@ class UsersView(APIView):
 
 class DjangoView(APIView):
     def post(self,request , *args, **kwargs):
+        rtJson = LHKit.LHResult()
+        return JsonResponse(rtJson)
+   
+from rest_framework.parsers import JSONParser,FormParser
+
+class ParserView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = [PSiteIPThrottle,]
+    parser_classes = [ JSONParser,FormParser,]
+    def post(self,request , *args, **kwargs):
+        print(request.data)
         rtJson = LHKit.LHResult()
         return JsonResponse(rtJson)
 
