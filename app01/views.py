@@ -106,6 +106,11 @@ class UsersView(APIView):
         ret ['data'] = jsUsers
         return JsonResponse(ret)
 
+class DjangoView(APIView):
+    def post(self,request , *args, **kwargs):
+        rtJson = LHKit.LHResult()
+        return JsonResponse(rtJson)
+
 # import json
 # from django.shortcuts import render,HttpResponse
 # from django.views.decorators.csrf import csrf_exempt
