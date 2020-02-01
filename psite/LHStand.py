@@ -19,7 +19,7 @@ class LHKit:
     def LHResult():
         rtModel = { # return model
         "code":1000,
-        "msg":"OK!",
+        "msg":"Good!",
         "data":0,
         }
         return rtModel
