@@ -20,6 +20,6 @@ class LHKit:
         rtModel = { # return model
         "code":1000,
         "msg":"Success !",
-        "data":0,
+        "data":[],
         }
         return rtModel

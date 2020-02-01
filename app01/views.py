@@ -55,12 +55,15 @@ class AuthView(APIView):
             pwd = request._request.POST.get('password')
             obj = models.UserInfo.objects.filter(user_name=user,password=pwd).first()
             if not obj :
-                ret['code'] = 1001
-                ret['msg'] = '没成功!'
-            token = md5(user)
-            models.UserToken.objects.update_or_create(user = obj , defaults = {'token':token})
-            ret ['data'] = token
-            ret ['Ver'] = request.version
+                ret['code'] = 900
+                ret['msg'] = '查无此人!'
+            else:
+                token = md5(user)
+                models.UserToken.objects.update_or_create(user = obj , defaults = {'token':token})
+                ret ['data'] = token
+                #ret ['code'] = 998
+                #ret ['msg'] = '我就说它不成功！'
+                ret ['Ver'] = request.version
             # if request.version == 'v2' :
             #     ret ['ADD'] = '新添加一点东西!'
             # u1 = request.versioning_scheme.reverse(viewname='uuu',request=request)
@@ -68,7 +71,7 @@ class AuthView(APIView):
 
 
         except Exception as e:
-            ret['code'] = 1002
+            ret['code'] = 997
             ret['msg'] = '出现了异常,请联系管理员'
         
         return JsonResponse(ret)
