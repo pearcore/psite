@@ -39,6 +39,7 @@ class UserInfo(models.Model):
     
     def __str__(self):
         return self.user_name
+
 class UserToken(models.Model):
     class Meta:
         verbose_name = '用户token'
