@@ -120,6 +120,24 @@ class ParserView(APIView):
         rtJson['data'] = request.data['age']
         return JsonResponse(rtJson)
 
+from rest_framework import serializers
+
+class RoleSer(serializers.Serializer):
+    title = serializers.CharField(label='zzz')
+    harmer =  "20"
+
+class RolesView(APIView):
+    permission_classes = [SVIPPermission,]
+    throttle_classes = [PSiteUserThrottle,]
+    parser_classes = [ JSONParser,]
+    def post(self,request , *args, **kwargs):
+        roles = models.UserRole.objects.all()
+        ser = RoleSer(instance = roles , many = True)
+
+        rtJson = LHKit.LHResult()
+        rtJson['data'] = ser.data
+        return JsonResponse(rtJson)
+
 # import json
 # from django.shortcuts import render,HttpResponse
 # from django.views.decorators.csrf import csrf_exempt
