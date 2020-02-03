@@ -124,7 +124,6 @@ from rest_framework import serializers
 
 class RoleSer(serializers.Serializer):
     title = serializers.CharField(label='zzz')
-    harmer =  "20"
 
 class RolesView(APIView):
     permission_classes = [SVIPPermission,]
@@ -138,6 +137,35 @@ class RolesView(APIView):
         rtJson['data'] = ser.data
         return JsonResponse(rtJson)
 
+class UserInfoSer(serializers.Serializer):
+    Name = serializers.CharField(source='user_name')
+    pwd = serializers.CharField(source='password')
+    itType = serializers.CharField(source='user_type')
+    stType = serializers.CharField(source='get_user_type_display')
+    gp = serializers.CharField(source='group.title')
+    role = serializers.CharField(source='role.all')
+
+    role2 = serializers.SerializerMethodField()
+
+    def get_role2(self , row):
+        allRoles = row.role.all()
+        ret = []
+        for temp in allRoles :
+            ret.append(
+                {
+                    "id":temp.id,
+                    "title":temp.title
+                }
+            )
+        return  ret
+
+class UserInfosView(APIView):
+    def post(self,request , *args, **kwargs):
+        users = models.UserInfo.objects.all()
+        serU = UserInfoSer(instance=users,many = True)
+        rtJson = LHKit.LHResult()
+        rtJson['data'] = serU.data
+        return JsonResponse(rtJson)
 # import json
 # from django.shortcuts import render,HttpResponse
 # from django.views.decorators.csrf import csrf_exempt
