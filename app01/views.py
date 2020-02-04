@@ -91,6 +91,7 @@ class OrderView(APIView):
             pass
         return JsonResponse(ret)
 
+from rest_framework import status
 class UserInfoView(APIView):
     def post(self, request , *args, **kwargs):
         print( request.user )
@@ -99,7 +100,7 @@ class UserInfoView(APIView):
             ret['data'] = LHKit.object_to_JSON( request.user )
         except Exception as e :
             pass
-        return JsonResponse(ret)
+        return JsonResponse(ret,status=status.HTTP_403_FORBIDDEN)
 
 class UsersView(APIView):
     permission_classes = [SVIPPermission,]

@@ -19,10 +19,13 @@ from django.views.static import serve
 from psite import settings
 from app01 import views
 from django.conf.urls import url,include
+#from rest_framework.documentation import include_docs_urls #
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('static/(?P<path>.*)', serve, {'document_root': settings.STATIC_ROOT }),
+
+    #url(r'^docs/', include_docs_urls(title='My API title')),
     #path('users/', views.users ),
     #path('students/', views.StudentsView.as_view() )
 
