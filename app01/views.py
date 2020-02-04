@@ -137,16 +137,36 @@ class RolesView(APIView):
         rtJson['data'] = ser.data
         return JsonResponse(rtJson)
 
-class UserInfoSer(serializers.Serializer):
-    Name = serializers.CharField(source='user_name')
-    pwd = serializers.CharField(source='password')
-    itType = serializers.CharField(source='user_type')
+# class UserInfoSer(serializers.Serializer):
+#     Name = serializers.CharField(source='user_name')
+#     pwd = serializers.CharField(source='password')
+#     itType = serializers.CharField(source='user_type')
+#     stType = serializers.CharField(source='get_user_type_display')
+#     gp = serializers.CharField(source='group.title')
+#     role = serializers.CharField(source='role.all')
+#     role2 = serializers.SerializerMethodField()
+#     def get_role2(self , row):
+#         allRoles = row.role.all()
+#         ret = []
+#         for temp in allRoles :
+#             ret.append(
+#                 {
+#                     "id":temp.id,
+#                     "title":temp.title
+#                 }
+#             )
+#         return  ret
+
+class UserInfoSer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserInfo
+        #fields = '__all__'
+        fields = ['id','user_name','role2','stType','group_name']
+        #extra_kwargs = {'group':{'source':'group.title'},}
+
     stType = serializers.CharField(source='get_user_type_display')
-    gp = serializers.CharField(source='group.title')
-    role = serializers.CharField(source='role.all')
-
     role2 = serializers.SerializerMethodField()
-
+    group_name = serializers.SerializerMethodField()
     def get_role2(self , row):
         allRoles = row.role.all()
         ret = []
@@ -158,6 +178,8 @@ class UserInfoSer(serializers.Serializer):
                 }
             )
         return  ret
+    def get_group_name(self , row):
+        return row.group.title
 
 class UserInfosView(APIView):
     def post(self,request , *args, **kwargs):

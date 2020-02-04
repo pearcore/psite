@@ -9,7 +9,7 @@ class LHKit:
         for temp in jsModels :
             one = temp['fields']
             one ['id'] = temp['pk']
-            #one ['modelName'] = temp['model']
+            one ['modelName'] = temp['model']
             rtJson.append (one)
         return rtJson
     def object_to_JSON(object):
