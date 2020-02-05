@@ -10,8 +10,55 @@ from app01.utils.throttle import PSiteIPThrottle,PSiteUserThrottle
 import json
 from django.urls import reverse
 from rest_framework.parsers import JSONParser,FormParser
-
 #from rest_framework.versioning import URLPathVersioning
+
+# import json
+# from django.shortcuts import render,HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
+# from django.utils.decorators import method_decorator
+# from rest_framework.views import APIView
+
+# # Create your views here.
+# @csrf_exempt
+# def users(request):
+#     user_list = ["test01", "test02"]
+#     return HttpResponse( json.dumps(user_list))
+
+# from django.views import View
+
+# @method_decorator(csrf_exempt,name="dispatch")
+# class StudentsView(APIView):
+#     # @method_decorator(csrf_exempt)
+#     # def dispatch(self , request, *args , **kwargs ):
+#     #     return super(StudentsView,self).dispatch(request, *args, **kwargs)
+
+#     def get(self, request,*args, **kwargs):
+#         return HttpResponse("Get")
+#     def post(self, request,*args, **kwargs):
+#         return HttpResponse("Post")
+
+# # from django.views import View
+# #@method_decorator(csrf_exempt,name="dispatch")
+# from rest_framework import exceptions
+# class LHAuthentication(object):
+#     def authenticate(self ,request):
+#         token = request._request.GET.get('token')
+#         if not token :
+#             raise exceptions.AuthenticationFailed('认证失败鸟~')
+#         return (token,None)
+#     def authenticate_header (self,val):
+#         pass
+
+# from django.views import View
+# from rest_framework.views import APIView
+# class DogsView(APIView):
+#     authentication_classes = [LHAuthentication,]
+#     def post(self, request,*args, **kwargs):
+#         print (request)
+#         print (request.user)
+#         self.dispatch
+#         return HttpResponse("sdsfsfsdfsfsGet" + request.user)
+
 
 def md5(user):
     import hashlib
@@ -94,13 +141,12 @@ class OrderView(APIView):
 from rest_framework import status
 class UserInfoView(APIView):
     def post(self, request , *args, **kwargs):
-        print( request.user )
         ret = LHKit.LHResult()
         try:
             ret['data'] = LHKit.object_to_JSON( request.user )
         except Exception as e :
             pass
-        return JsonResponse(ret,status=status.HTTP_403_FORBIDDEN)
+        return JsonResponse(ret)
 
 class UsersView(APIView):
     permission_classes = [SVIPPermission,]
@@ -158,13 +204,19 @@ class RolesView(APIView):
 #             )
 #         return  ret
 
+class LHCharfield(serializers.CharField):
+    def to_representation(self,value):
+        print (value)
+        return "2"
+
+
 class UserInfoSer(serializers.ModelSerializer):
     class Meta:
         model = models.UserInfo
         #fields = '__all__'
-        fields = ['id','user_name','role2','stType','group_name']
+        fields = ['id','user_name','role2','stType','group_name','gogogo']
         #extra_kwargs = {'group':{'source':'group.title'},}
-
+    gogogo = LHCharfield(source= "user_name")
     stType = serializers.CharField(source='get_user_type_display')
     role2 = serializers.SerializerMethodField()
     group_name = serializers.SerializerMethodField()
@@ -189,51 +241,4 @@ class UserInfosView(APIView):
         rtJson = LHKit.LHResult()
         rtJson['data'] = serU.data
         return JsonResponse(rtJson)
-# import json
-# from django.shortcuts import render,HttpResponse
-# from django.views.decorators.csrf import csrf_exempt
-# from django.utils.decorators import method_decorator
-# from rest_framework.views import APIView
-
-# # Create your views here.
-# @csrf_exempt
-# def users(request):
-#     user_list = ["test01", "test02"]
-#     return HttpResponse( json.dumps(user_list))
-
-# from django.views import View
-
-# @method_decorator(csrf_exempt,name="dispatch")
-# class StudentsView(APIView):
-#     # @method_decorator(csrf_exempt)
-#     # def dispatch(self , request, *args , **kwargs ):
-#     #     return super(StudentsView,self).dispatch(request, *args, **kwargs)
-
-#     def get(self, request,*args, **kwargs):
-#         return HttpResponse("Get")
-#     def post(self, request,*args, **kwargs):
-#         return HttpResponse("Post")
-
-# # from django.views import View
-# #@method_decorator(csrf_exempt,name="dispatch")
-# from rest_framework import exceptions
-# class LHAuthentication(object):
-#     def authenticate(self ,request):
-#         token = request._request.GET.get('token')
-#         if not token :
-#             raise exceptions.AuthenticationFailed('认证失败鸟~')
-#         return (token,None)
-#     def authenticate_header (self,val):
-#         pass
-
-# from django.views import View
-# from rest_framework.views import APIView
-# class DogsView(APIView):
-#     authentication_classes = [LHAuthentication,]
-#     def post(self, request,*args, **kwargs):
-#         print (request)
-#         print (request.user)
-#         self.dispatch
-#         return HttpResponse("sdsfsfsdfsfsGet" + request.user)
-
 
