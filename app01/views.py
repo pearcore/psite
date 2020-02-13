@@ -132,7 +132,6 @@ class OrderView(APIView):
     def post(self, request , *args, **kwargs):
         ret = LHKit.LHResult()
         try:
-            print (request.user.user_type)
             ret['data'] = Order_Dict
         except Exception as e :
             pass
