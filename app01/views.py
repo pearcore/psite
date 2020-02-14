@@ -183,33 +183,32 @@ class RolesView(APIView):
         rtJson['data'] = ser.data
         return JsonResponse(rtJson)
 
-# class UserInfoSer(serializers.Serializer):
-#     Name = serializers.CharField(source='user_name')
-#     pwd = serializers.CharField(source='password')
-#     itType = serializers.CharField(source='user_type')
-#     stType = serializers.CharField(source='get_user_type_display')
-#     gp = serializers.CharField(source='group.title')
-#     role = serializers.CharField(source='role.all')
-#     role2 = serializers.SerializerMethodField()
-#     def get_role2(self , row):
-#         allRoles = row.role.all()
-#         ret = []
-#         for temp in allRoles :
-#             ret.append(
-#                 {
-#                     "id":temp.id,
-#                     "title":temp.title
-#                 }
-#             )
-#         return  ret
+class UserInfoSer0(serializers.Serializer):
+    Name = serializers.CharField(source='user_name')
+    pwd = serializers.CharField(source='password')
+    itType = serializers.CharField(source='user_type')
+    stType = serializers.CharField(source='get_user_type_display')
+    gp = serializers.CharField(source='group.title')
+    role = serializers.CharField(source='role.all')
+    role2 = serializers.SerializerMethodField()
+    def get_role2(self , row):
+        allRoles = row.role.all()
+        ret = []
+        for temp in allRoles :
+            ret.append(
+                {
+                    "id":temp.id,
+                    "title":temp.title
+                }
+            )
+        return  ret
 
 class LHCharfield(serializers.CharField):
     def to_representation(self,value):
         print (value)
-        return "2"
+        return "something"
 
-
-class UserInfoSer(serializers.ModelSerializer):
+class UserInfoSer1(serializers.ModelSerializer):
     class Meta:
         model = models.UserInfo
         #fields = '__all__'
@@ -236,8 +235,8 @@ class UserInfoSer(serializers.ModelSerializer):
 class UserInfoSer2(serializers.ModelSerializer):
     class Meta:
         model = models.UserInfo
-        fields = "__all__"
-        #depth = 1
+        fields = '__all__'
+        depth = 1
 
 class UserInfosView(APIView):
     def post(self,request , *args, **kwargs):
