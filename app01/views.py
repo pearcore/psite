@@ -233,11 +233,33 @@ class UserInfoSer(serializers.ModelSerializer):
     def get_group_name(self , row):
         return row.group.title
 
+class UserInfoSer2(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserInfo
+        fields = "__all__"
+        #depth = 1
+
 class UserInfosView(APIView):
     def post(self,request , *args, **kwargs):
         users = models.UserInfo.objects.all()
-        serU = UserInfoSer(instance=users,many = True)
+        serU = UserInfoSer2(instance=users,many = True)
         rtJson = LHKit.LHResult()
         rtJson['data'] = serU.data
+        return JsonResponse(rtJson)
+
+class GroupSer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserGroup
+        fields = "__all__"
+        #depth = 1
+
+class GroupView(APIView):
+    def post(self,request , *args, **kwargs):
+        itId = request.data['id']
+        print(itId)
+        group = models.UserGroup.objects.filter(id=itId).first()
+        serGroup = GroupSer(instance=group,many = False)
+        rtJson = LHKit.LHResult()
+        rtJson['data'] = serGroup.data
         return JsonResponse(rtJson)
 
