@@ -233,16 +233,34 @@ class UserInfoSer1(serializers.ModelSerializer):
         return row.group.title
 
 class UserInfoSer2(serializers.ModelSerializer):
+    group = serializers.HyperlinkedIdentityField(view_name='gp',lookup_field='group_id',lookup_url_kwarg='pk')
     class Meta:
         model = models.UserInfo
-        fields = '__all__'
-        depth = 1
+        fields = ['id','group']  #'__all__'
+        depth = 0
 
 class UserInfosView(APIView):
     def post(self,request , *args, **kwargs):
         users = models.UserInfo.objects.all()
-        serU = UserInfoSer2(instance=users,many = True)
+        serU = UserInfoSer2(instance=users,many = True,context={'request':request})
         rtJson = LHKit.LHResult()
         rtJson['data'] = serU.data
+        return JsonResponse(rtJson)
+
+class GroupSer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = models.UserGroup
+        fields = "__all__"
+        #depth = 1
+
+class GroupView(APIView):
+    def post(self,request , *args, **kwargs):
+        itId = request.data['id']
+        print(itId)
+        group = models.UserGroup.objects.filter(id=itId).first()
+        serGroup = GroupSer(instance=group,many = False)
+        rtJson = LHKit.LHResult()
+        rtJson['data'] = serGroup.data
         return JsonResponse(rtJson)
 
