@@ -1,4 +1,6 @@
 决定重新开始学习.
+1.django-admin startproject psite
+
 
 添加 git 第二地址
 D:\workshop\document\200123a_psite>git remote add github https://github.com/pearcore/psite.git
