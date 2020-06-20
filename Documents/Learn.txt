@@ -1,2 +1,4 @@
 https://www.bilibili.com/video/av28871471?p=1
 
+决定重新开始学习.
+1.django-admin startproject psite
