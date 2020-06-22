@@ -1,5 +1,21 @@
 决定重新开始学习.
 1.django-admin startproject psite
+python manage.py startapp app01
+
+URL: url(r'students/', views.StudentsView.as_view()),
+View:
+class StudentsView(View):
+    def get(self,request , *args, **kwargs):
+        user_list = ["dddd","aaaaa"]
+        rt = LHKit.LHResult()
+        rt['data'] = user_list
+        return HttpResponse( json.dumps( rt ) )
+    def post(self,request , *args, **kwargs):
+        user_list = ["Post","Post"]
+        rt = LHKit.LHResult()
+        rt['data'] = user_list
+        return HttpResponse( json.dumps( rt ) )
+
 
 
 添加 git 第二地址
