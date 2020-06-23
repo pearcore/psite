@@ -11,6 +11,13 @@ def users(request):
 from django.views import View
 
 class StudentsView(View):
+    def dispatch(self, request , *args, **kwargs):
+        print('before')
+        ret = super(StudentsView,self).dispatch(request , *args , **kwargs)
+        print('after')
+        return ret 
+    
+
     def get(self,request , *args, **kwargs):
         user_list = ["dddd","aaaaa"]
         rt = LHKit.LHResult()
