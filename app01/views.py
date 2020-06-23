@@ -32,6 +32,7 @@ class StudentsView(View):
         rt = LHKit.LHResult()
         rt['data'] = user_list
         return HttpResponse( json.dumps( rt ) )
+@csrf_except
     def delete(self,request , *args, **kwargs):
         user_list = {"Method":"delete"}
         rt = LHKit.LHResult()
