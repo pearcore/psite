@@ -17,7 +17,6 @@ class StudentsView(View):
         print('after')
         return ret 
     
-
     def get(self,request , *args, **kwargs):
         user_list = ["dddd","aaaaa"]
         rt = LHKit.LHResult()

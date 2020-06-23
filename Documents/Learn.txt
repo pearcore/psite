@@ -15,7 +15,6 @@ class StudentsView(View): #实现请求中事先或者事后做点什么.
         print('after')
         return ret 
 
-
     def get(self,request , *args, **kwargs):
         user_list = ["dddd","aaaaa"]
         rt = LHKit.LHResult()
@@ -26,6 +25,7 @@ class StudentsView(View): #实现请求中事先或者事后做点什么.
         rt = LHKit.LHResult()
         rt['data'] = user_list
         return HttpResponse( json.dumps( rt ) )
-
+@csrf_except # 打开'django.middleware.csrf.CsrfViewMiddleware'的时候,装饰者不需要认证.
+@csrf_protect # 关闭'django.middleware.csrf.CsrfViewMiddleware'的时候,装饰着需要认证.
 
 
