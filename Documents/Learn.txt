@@ -1,6 +1,6 @@
 https://www.bilibili.com/video/av28871471?p=7 Django 接口
 
-https://www.bilibili.com/video/BV1KE41117XV?p=26 flutter
+https://www.bilibili.com/video/BV1KE41117XV?p=29 flutter
 
 决定重新开始学习.
 1.django-admin startproject psite
