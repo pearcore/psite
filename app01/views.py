@@ -1,7 +1,8 @@
 from django.shortcuts import render,HttpResponse
 import json
 from psite.LHStand import LHKit
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 # Create your views here.
 
 def users(request):
@@ -13,6 +14,7 @@ def users(request):
 from django.views import View
 
 class StudentsView(View):
+    #@method_decorator(csrf_exempt)
     def dispatch(self, request , *args, **kwargs):
         print('before')
         ret = super(StudentsView,self).dispatch(request , *args , **kwargs)
