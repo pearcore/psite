@@ -1,7 +1,10 @@
 from django.shortcuts import render,HttpResponse
 import json
 from psite.LHStand import LHKit
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 # Create your views here.
+
 def users(request):
     user_list = ["Test","dkdkdk"]
     rt = LHKit.LHResult()
@@ -11,6 +14,13 @@ def users(request):
 from django.views import View
 
 class StudentsView(View):
+    #@method_decorator(csrf_exempt)
+    def dispatch(self, request , *args, **kwargs):
+        print('before')
+        ret = super(StudentsView,self).dispatch(request , *args , **kwargs)
+        print('after')
+        return ret 
+    
     def get(self,request , *args, **kwargs):
         user_list = ["dddd","aaaaa"]
         rt = LHKit.LHResult()
@@ -26,6 +36,7 @@ class StudentsView(View):
         rt = LHKit.LHResult()
         rt['data'] = user_list
         return HttpResponse( json.dumps( rt ,ensure_ascii=False) )
+
     def delete(self,request , *args, **kwargs):
         user_list = {"Method":"delete"}
         rt = LHKit.LHResult()
