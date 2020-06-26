@@ -25,7 +25,7 @@ class StudentsView(View):
         user_list = ["Method","这个是PUT方法"]
         rt = LHKit.LHResult()
         rt['data'] = user_list
-        return HttpResponse( json.dumps( rt ) )
+        return HttpResponse( json.dumps( rt ,ensure_ascii=False) )
     def delete(self,request , *args, **kwargs):
         user_list = {"Method":"delete"}
         rt = LHKit.LHResult()
