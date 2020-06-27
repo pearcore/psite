@@ -1,6 +1,23 @@
 https://www.bilibili.com/video/av28871471?p=9 Django 接口
 
-https://www.bilibili.com/video/BV1KE41117XV?p=29 flutter
+https://www.bilibili.com/video/BV1KE41117XV?p=31 flutter
+
+2. RESTful API规范
+   1. HTTPS
+   2. api.easypass.com 或者 easypass.com/api/ 
+   3. 一般带个版本，v1，v2之类的。
+   4. 面向资源，所以用名词作为url名
+   5. method 
+        get 得到资源 查
+        post 新建资源 增
+        put 更新资源（全部更新） 改
+        patch 更新资源（局部更新） 改
+        delete 删除资源 删
+   6. URL上加参数作为搜索条件。
+   7. 状态码
+   8. 当4XX的状态时候，error 内容为报错信息。
+   9. 不同method时候的一些小标准（好像没用），比如创建后返回完整资源数据。什么什么的。
+   10. 单体里面带着URL方便访问。
 
 决定重新开始学习.
 1.django-admin startproject psite

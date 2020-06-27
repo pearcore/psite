@@ -23,7 +23,7 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     #path('users/', views.users),
     #path('students/', views.StudentsView.as_view() ),
-    url(r'users/', views.users),
-    url(r'students/', views.StudentsView.as_view()),
-
+    #url(r'users/', views.users),
+    #url(r'students/', views.StudentsView.as_view()),
+    url(r'dogs/', views.DogView.as_view()),
 ]
