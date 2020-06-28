@@ -1,6 +1,18 @@
 https://www.bilibili.com/video/av28871471?p=9 Django 接口
 
-https://www.bilibili.com/video/BV1KE41117XV?p=31 flutter
+https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
+
+3. 认证。
+authentication_classes = [MyAuthentication]
+class MyAuthentication(object):
+    def authenticate(self,request):
+        token = request._request.GET.get('token')
+        if not token :
+            raise exceptions.AuthenticationFailed("认证失败鸟！")
+        return ('Alex',None)
+    def authenticate_header(self,val):
+        pass
+
 
 2. RESTful API规范
    1. HTTPS
