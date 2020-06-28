@@ -1,6 +1,6 @@
-https://www.bilibili.com/video/av28871471?p=9 Django 接口
+https://www.bilibili.com/video/av28871471?p=13 Django 接口
 
-https://www.bilibili.com/video/BV1KE41117XV?p=31 flutter
+https://www.bilibili.com/video/BV1KE41117XV?p=15 flutter
 
 2. RESTful API规范
    1. HTTPS
