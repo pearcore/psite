@@ -25,5 +25,8 @@ urlpatterns = [
     #path('students/', views.StudentsView.as_view() ),
     #url(r'users/', views.users),
     #url(r'students/', views.StudentsView.as_view()),
-    url(r'dogs/', views.DogView.as_view()),
+    #url(r'dogs/', views.DogView.as_view()),
+    url(r'^admin/' , admin.site.urls),
+    url(r'^api/v1/auth/$' , views.AuthView.as_view()),
+    
 ]

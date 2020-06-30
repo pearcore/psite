@@ -2,7 +2,23 @@ https://www.bilibili.com/video/av28871471?p=15 Django 接口
 
 https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
 
-4. 认证，权限，节流，版本
+4. 
+class UserInfo(models.Model):
+    user_type_choices = (
+        (1,'普通用户'),
+        (2,'VIP用户'),
+        (3,'VIP中P用户'),
+    )
+    user_type = models.IntegerField(choices = user_type_choices)
+    username = models.CharField(max_length = 32 , unique=True)
+    password = models.CharField(max_length = 64)
+
+class UserToken(models.Model):
+    user = models.OneToOneField(to='UserInfo', on_delete = models.CASCADE) # 这里必须加上  on_delete , 
+    token = models.CharField(max_length=64)
+
+python manage.py makemigrations
+python manage.py migrate
 
 3. 认证。
 authentication_classes = [MyAuthentication]
