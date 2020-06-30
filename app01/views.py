@@ -11,7 +11,7 @@ def md5(user):
     m.update(bytes(ctime,encoding='utf-8'))
     return m.hexdigest()
 
-class AuthView(APIView):
+class AuthView(APIView): #用于用户登录
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
         try:
@@ -34,6 +34,53 @@ class AuthView(APIView):
             ret['msg'] = '请求异常！'
 
         return JsonResponse( ret ) 
+
+ORDER_DICT = {
+    1:{
+        'name':'媳妇',
+        'age':18,
+        'gender':'男',
+        'content':'.......'
+    },
+    2:{
+        'name':'金毛',
+        'age':5,
+        'gender':'',
+        'content':'一条狗'
+    }
+}
+
+from rest_framework import exceptions
+class Authtication(object):
+    def authenticate(self, request):
+        token = request._request.GET.get('token')
+        token_obj = models.UserToken.objects.filter(token=token).first()
+        if not token_obj:
+            raise exceptions.AuthenticationFailed('用户认证失败')
+        #在restframework内部会将两个字段赋值给request，以供后面使用。
+        return (token_obj.user,token_obj)
+    def authenticate_header(self,val):
+        pass
+
+class OrderView(APIView): #订单相关业务
+    authentication_classes = [Authtication,]
+
+    def get(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        # token = request._request.GET.get('token')
+        # if not token :
+        #     ret['code'] = 900
+        #     ret['msg'] = '用户没登录'
+        #     return JsonResponse(ret)
+        try:
+            ret ['data'] = ORDER_DICT
+            ret ['user'] = request.user.username
+            #ret ['tokenobj'] = request.auth
+        except Exception as e:
+            pass
+        return JsonResponse(ret)
+
+    
 
 # from django.shortcuts import render,HttpResponse
 # import json

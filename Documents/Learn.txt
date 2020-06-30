@@ -1,6 +1,21 @@
-https://www.bilibili.com/video/av28871471?p=15 Django 接口
+https://www.bilibili.com/video/av28871471?p=18 Django 接口
 
 https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
+
+5. 认证； ，首先，写这么个类：
+class Authtication(object):
+    def authenticate(self, request):
+        token = request._request.GET.get('token')
+        token_obj = models.UserToken.objects.filter(token=token).first()
+        if not token_obj:
+            raise exceptions.AuthenticationFailed('用户认证失败')
+        #在restframework内部会将两个字段赋值给request，以供后面使用。
+        return (token_obj.user,token_obj)
+    def authenticate_header(self,val):
+        pass
+
+ 然后，在view里面，把这个加上。
+  authentication_classes = [Authtication,]
 
 4. 
 class UserInfo(models.Model):
