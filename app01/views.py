@@ -12,6 +12,7 @@ def md5(user):
     return m.hexdigest()
 
 class AuthView(APIView): #用于用户登录
+    authentication_classes = []
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
         try:
@@ -47,24 +48,11 @@ ORDER_DICT = {
         'age':5,
         'gender':'',
         'content':'一条狗'
-    }
-}
-
-from rest_framework import exceptions
-class Authtication(object):
-    def authenticate(self, request):
-        token = request._request.GET.get('token')
-        token_obj = models.UserToken.objects.filter(token=token).first()
-        if not token_obj:
-            raise exceptions.AuthenticationFailed('用户认证失败')
-        #在restframework内部会将两个字段赋值给request，以供后面使用。
-        return (token_obj.user,token_obj)
-    def authenticate_header(self,val):
-        pass
+    }}
 
 class OrderView(APIView): #订单相关业务
-    authentication_classes = [Authtication,]
-
+    #authentication_classes = [Authtication,]
+    #authentication_classes = []
     def get(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
         # token = request._request.GET.get('token')
@@ -75,7 +63,7 @@ class OrderView(APIView): #订单相关业务
         try:
             ret ['data'] = ORDER_DICT
             ret ['user'] = request.user.username
-            #ret ['tokenobj'] = request.auth
+
         except Exception as e:
             pass
         return JsonResponse(ret)

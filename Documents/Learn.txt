@@ -17,6 +17,19 @@ class Authtication(object):
  然后，在view里面，把这个加上。
   authentication_classes = [Authtication,]
 
+  或者全局设置：
+    REST_FRAMEWORK = {
+        "DEFAULT_AUTHENTICATION_CLASSES":['app01.utils.auth.FirstAuthtication' , 'app01.utils.auth.Authtication',],
+        "UNAUTHENTICATED_USER": None, # 匿名 ， request.user = none 
+        "UNAUTHENTICATED_TOKEN": None, # 匿名 ， request.auth = none 
+    }
+
+
+  不想用的api， 顶上个这个就行 authentication_classes = []
+
+
+
+
 4. 
 class UserInfo(models.Model):
     user_type_choices = (
