@@ -12,6 +12,7 @@ def md5(user):
     return m.hexdigest()
 
 class AuthView(APIView): #用于用户登录
+
     authentication_classes = []
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
@@ -36,6 +37,8 @@ class AuthView(APIView): #用于用户登录
 
         return JsonResponse( ret ) 
 
+
+
 ORDER_DICT = {
     1:{
         'name':'媳妇',
@@ -49,10 +52,12 @@ ORDER_DICT = {
         'gender':'',
         'content':'一条狗'
     }}
+from app01.utils.permission import SVIPPermission,NONSVIPPermission
 
 class OrderView(APIView): #订单相关业务
     #authentication_classes = [Authtication,]
     #authentication_classes = []
+    permission_classes = [SVIPPermission,]
     def get(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
         # token = request._request.GET.get('token')
@@ -63,12 +68,30 @@ class OrderView(APIView): #订单相关业务
         try:
             ret ['data'] = ORDER_DICT
             ret ['user'] = request.user.username
+            ret ['userType'] = request.user.user_type
+            
 
         except Exception as e:
             pass
         return JsonResponse(ret)
 
-    
+class UserInfoView(APIView): #订单相关业务
+    #authentication_classes = [Authtication,]
+    #authentication_classes = []
+    permission_classes = [NONSVIPPermission,]
+    def get(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        # token = request._request.GET.get('token')
+        # if not token :
+        #     ret['code'] = 900
+        #     ret['msg'] = '用户没登录'
+        #     return JsonResponse(ret)
+        try:
+            ret ['data'] = "假装有客户的信息"
+
+        except Exception as e:
+            pass
+        return JsonResponse(ret)
 
 # from django.shortcuts import render,HttpResponse
 # import json
