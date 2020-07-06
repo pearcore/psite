@@ -126,5 +126,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES":['app01.utils.auth.FirstAuthtication' , 'app01.utils.auth.Authtication',],
     "UNAUTHENTICATED_USER": None, # 匿名 ， request.user = none 
     "UNAUTHENTICATED_TOKEN": None, # 匿名 ， request.auth = none 
+    #"DEFAULT_PERMISSION_CLASSES":['app01.utils.permission.SVIPPermission','app01.utils.permission.NONSVIPPermission',]
 }
 
