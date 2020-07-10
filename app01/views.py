@@ -14,6 +14,7 @@ def md5(user):
 class AuthView(APIView): #用于用户登录
 
     authentication_classes = []
+    #throttle_classes = [VisitTrottle]
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
         try:

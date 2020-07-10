@@ -1,8 +1,8 @@
-https://www.bilibili.com/video/av28871471?p=18 Django 接口
+https://www.bilibili.com/video/av28871471?p=25 Django 接口
 
 https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
 6. 权限 ： 写这么个类
-class SVIPPermission(object):
+class SVIPPermission(BasePermission):
     def has_permission(self,request,view):
         if request.user.user_type != 3 :
             return False
