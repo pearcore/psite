@@ -1,6 +1,27 @@
 https://www.bilibili.com/video/av28871471?p=25 Django 接口
 
 https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
+7. 节流
+    #"DEFAULT_THROTTLE_CLASSES":['app01.utils.throttle.VisitTrottle'],
+    "DEFAULT_THROTTLE_RATES": {
+        "Luffy":'4/m',
+        "LuffyUser":'2/m',
+    }
+
+    class Visit3Throttle (SimpleRateThrottle):
+    scope = "LuffyUser"
+
+    def get_cache_key(self,request,view):
+        return request.user.username
+
+class Visit2Throttle (SimpleRateThrottle):
+    scope = "Luffy"
+
+    def get_cache_key(self,request,view):
+        return self.get_ident(request)
+
+throttle_classes = [Visit3Throttle]
+
 6. 权限 ： 写这么个类
 class SVIPPermission(BasePermission):
     def has_permission(self,request,view):

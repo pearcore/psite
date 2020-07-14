@@ -1,4 +1,17 @@
-from rest_framework.throttling import BaseThrottle
+from rest_framework.throttling import SimpleRateThrottle,BaseThrottle
+
+class Visit3Throttle (SimpleRateThrottle):
+    scope = "LuffyUser"
+
+    def get_cache_key(self,request,view):
+        return request.user.username
+
+class Visit2Throttle (SimpleRateThrottle):
+    scope = "Luffy"
+
+    def get_cache_key(self,request,view):
+        return self.get_ident(request)
+
 import time
 VISIT_RECORD = {}
 class VisitTrottle(BaseThrottle):
