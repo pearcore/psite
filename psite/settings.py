@@ -25,7 +25,7 @@ SECRET_KEY = '0$y3!7e7cx%!ene2wcam*c%uvd*c(()s_4jxu13pe-!)(6$^42'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','pearcore.pythonanywhere.com']
 
 
 # Application definition
