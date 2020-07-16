@@ -12,7 +12,7 @@ class FirstAuthtication(BaseAuthentication):
 
 class Authtication(BaseAuthentication):
     def authenticate(self, request):
-        token = request._request.GET.get('token')
+        token = request.data['token']
         token_obj = models.UserToken.objects.filter(token=token).first()
         if not token_obj:
             raise exceptions.AuthenticationFailed('用户认证失败')

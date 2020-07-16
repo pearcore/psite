@@ -20,13 +20,16 @@ class AuthView(APIView): #用于用户登录
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
         try:
-            user = request._request.POST.get('username')
-            password = request._request.POST.get('password')
-
+            user = request.data["username"] #request._request.POST.get('username')
+            password = request.data["password"] #request._request.POST.get('password')
+            print("lalalala2!")
+            #print(password)
+            #print(request.body)
             obj = models.UserInfo.objects.filter(username=user,password=password).first()
             if not obj:
                 ret['code'] = 1001 
                 ret['data'] = "登录失败"
+                ret['msg'] = "用户名或密码错误！"
             else:
                 ret['code'] = 10000
                 ret['data'] = "登录成功"
@@ -61,7 +64,7 @@ class OrderView(APIView): #订单相关业务
     #authentication_classes = [Authtication,]
     #authentication_classes = []
     permission_classes = [SVIPPermission,]
-    def get(self,request,*args,**kwargs):
+    def post(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
         # token = request._request.GET.get('token')
         # if not token :
@@ -83,7 +86,7 @@ class UserInfoView(APIView): #订单相关业务
     #authentication_classes = []
     permission_classes = [NONSVIPPermission,]
     throttle_classes = [Visit3Throttle]
-    def get(self,request,*args,**kwargs):
+    def post(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
         # token = request._request.GET.get('token')
         # if not token :
