@@ -26,3 +26,17 @@ class Authtication(BaseAuthentication):
 
     def authenticate_header(self,val):
         pass
+
+class PSiteAuthentication(BaseAuthentication):
+    def authenticate(self, request):
+        try:
+            token = request.headers['token']
+        except Exception as e:
+            token = ''
+        token_obj = models.UserToken.objects.filter(token=token).first()
+        if not token_obj :
+            raise exceptions.AuthenticationFailed('用户认证失败')
+        return (token_obj.user , token_obj)
+    def authenticate_header(self,request):
+        #return 'Basic realm= "api"'
+        pass
