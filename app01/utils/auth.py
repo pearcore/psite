@@ -38,5 +38,4 @@ class PSiteAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed('用户认证失败')
         return (token_obj.user , token_obj)
     def authenticate_header(self,request):
-        #return 'Basic realm= "api"'
         pass

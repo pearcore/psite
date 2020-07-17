@@ -128,10 +128,16 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None, # 匿名 ， request.user = none 
     "UNAUTHENTICATED_TOKEN": None, # 匿名 ， request.auth = none 
     #"DEFAULT_PERMISSION_CLASSES":['app01.utils.permission.SVIPPermission','app01.utils.permission.NONSVIPPermission',]
-    #"DEFAULT_THROTTLE_CLASSES":['app01.utils.throttle.VisitTrottle'],
-    "DEFAULT_THROTTLE_RATES": {
-        "Luffy":'4/m',
-        "LuffyUser":'2/m',
-    }
+    # #"DEFAULT_THROTTLE_CLASSES":['app01.utils.throttle.VisitTrottle'],
+    # "DEFAULT_THROTTLE_RATES": {
+    #     "Luffy":'4/m',
+    #     "LuffyUser":'2/m',
+    # }
+    
+    "DEFAULT_THROTTLE_CLASSES":['app01.utils.throttle.PSiteUserThrottle',], 
+    "DEFAULT_THROTTLE_RATES":{
+        "PSiteIPThrottleRate":'20/m',
+        "PSiteUserThrottleRate":'60/m',
+    },
 }
 

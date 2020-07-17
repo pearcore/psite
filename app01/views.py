@@ -11,11 +11,11 @@ def md5(user):
     m.update(bytes(ctime,encoding='utf-8'))
     return m.hexdigest()
 
-from app01.utils.throttle import Visit2Throttle, VisitTrottle,Visit3Throttle
+from app01.utils.throttle import PSiteIPThrottle, PSiteUserThrottle
 class AuthView(APIView): #用于用户登录
 
     authentication_classes = []
-    throttle_classes = [VisitTrottle]
+    throttle_classes = [PSiteIPThrottle]
     #throttle_classes = [Visit2Throttle]
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
@@ -85,7 +85,7 @@ class UserInfoView(APIView): #订单相关业务
     #authentication_classes = [Authtication,]
     #authentication_classes = []
     permission_classes = [NONSVIPPermission,]
-    throttle_classes = [Visit3Throttle]
+    
     def post(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
         # token = request._request.GET.get('token')
