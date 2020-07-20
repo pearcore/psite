@@ -13,22 +13,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
+# from django.contrib import admin
+# from django.urls import path
 
-from django.conf.urls import url
-from app01 import views
+# from django.conf.urls import url
+# from app01 import views
+
+# urlpatterns = [
+#     #path('admin/', admin.site.urls),
+#     #path('users/', views.users),
+#     #path('students/', views.StudentsView.as_view() ),
+#     #url(r'users/', views.users),
+#     #url(r'students/', views.StudentsView.as_view()),
+#     #url(r'dogs/', views.DogView.as_view()),
+#     url(r'^admin/' , admin.site.urls),
+#     url(r'^app01api/v1/auth/$' , views.AuthView.as_view()),
+#     url(r'^app01api/v1/order/$' , views.OrderView.as_view()),
+#     url(r'^app01api/v1/userinfo/$' , views.UserInfoView.as_view()),
+    
+# ]
+from django.conf.urls import url,include
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
-    #path('users/', views.users),
-    #path('students/', views.StudentsView.as_view() ),
-    #url(r'users/', views.users),
-    #url(r'students/', views.StudentsView.as_view()),
-    #url(r'dogs/', views.DogView.as_view()),
-    url(r'^admin/' , admin.site.urls),
-    url(r'^api/v1/auth/$' , views.AuthView.as_view()),
-    url(r'^api/v1/order/$' , views.OrderView.as_view()),
-    url(r'^api/v1/userinfo/$' , views.UserInfoView.as_view()),
-    
+    url(r'app01api/',include('app01.urls')),
 ]

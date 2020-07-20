@@ -100,6 +100,16 @@ class UserInfoView(APIView): #订单相关业务
             pass
         return JsonResponse(ret)
 
+from rest_framework.versioning import URLPathVersioning
+class UsersView(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    #versioning_class = URLPathVersioning
+    def post(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        ret ['data'] = request.version 
+        return JsonResponse(ret)
+
 # from django.shortcuts import render,HttpResponse
 # import json
 # from psite.LHStand import LHKit

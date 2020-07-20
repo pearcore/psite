@@ -139,5 +139,10 @@ REST_FRAMEWORK = {
         "PSiteIPThrottleRate":'20/m',
         "PSiteUserThrottleRate":'60/m',
     },
+
+    "DEFAULT_VERSIONING_CLASS":"rest_framework.versioning.URLPathVersioning",
+    "DEFAULT_VERSION":'v1',
+    "ALLOWED_VERSIONS": ['v1','v2'], # 全部可以写的！
+    "VERSION_PARAM": 'ver',
 }
 

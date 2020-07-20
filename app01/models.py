@@ -1,4 +1,6 @@
 from django.db import models
+class UserGroup(models.Model):
+    title = models.CharField(max_length = 32)
 
 class UserInfo(models.Model):
     user_type_choices = (
@@ -10,8 +12,12 @@ class UserInfo(models.Model):
     username = models.CharField(max_length = 32 , unique=True)
     password = models.CharField(max_length = 64)
 
+    group = models.ForeignKey("UserGroup", null = True , on_delete= models.CASCADE)
+    roles = models.ManyToManyField("Role")
+
 class UserToken(models.Model):
     user = models.OneToOneField(to='UserInfo', on_delete = models.CASCADE)
     token = models.CharField(max_length=64)
 
-    
+class Role(models.Model):
+    title = models.CharField(max_length = 32)

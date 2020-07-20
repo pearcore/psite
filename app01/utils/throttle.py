@@ -8,7 +8,7 @@ class PSiteIPThrottle(SimpleRateThrottle):
 class PSiteUserThrottle(SimpleRateThrottle):
     scope = "PSiteUserThrottleRate"
     def get_cache_key(self,request,view):
-        return request.user.user_name
+        return request.user.username
 
         
 # class Visit3Throttle (SimpleRateThrottle):
