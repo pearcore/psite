@@ -107,8 +107,31 @@ class UsersView(APIView):
     #versioning_class = URLPathVersioning
     def post(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
-        ret ['data'] = request.version 
+        u1 = request.versioning_scheme.reverse(viewname='qqq',request=request)
+        #from django.urls import reverse
+        #u2 = reverse(viewname='qqq',kwargs={'ver':2})
+        ret ['data'] = u1 #request.version 
         return JsonResponse(ret)
+
+class DjangoView(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    #versioning_class = URLPathVersioning
+    def post(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        ret ['data'] = "3333" 
+        return JsonResponse(ret)
+
+class ParserView(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    #versioning_class = URLPathVersioning
+    def post(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        ret ['data'] = request.data['test2']
+        return JsonResponse(ret)
+
+
 
 # from django.shortcuts import render,HttpResponse
 # import json

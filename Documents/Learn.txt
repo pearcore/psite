@@ -1,6 +1,21 @@
 https://www.bilibili.com/video/av28871471?p=25 Django 接口
 
 https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
+9. 解析器
+
+8. 版本
+    "DEFAULT_VERSIONING_CLASS":"rest_framework.versioning.URLPathVersioning",
+    "DEFAULT_VERSION":'v1',
+    "ALLOWED_VERSIONS": ['v1','v2'], # 全部可以写的！
+    "VERSION_PARAM": 'ver',
+
+    url(r'^(?P<ver>[v1|v2|v3]+)/users/$',views.UsersView.as_view(),name='qqq'), #本链接里面允许的
+    request.version #得到版本
+    u1 = request.versioning_scheme.reverse(viewname='qqq',request=request) #反向生成url
+    #from django.urls import reverse
+    #u2 = reverse(viewname='qqq',kwargs={'ver':2})  #得到生成url 的另一种方法
+    ret ['data'] = u1 
+
 7. 节流
     #"DEFAULT_THROTTLE_CLASSES":['app01.utils.throttle.VisitTrottle'],
     "DEFAULT_THROTTLE_RATES": {
