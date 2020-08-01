@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from psite.LHStand import LHKit
 from app01 import models
+from rest_framework import serializers
 
 def md5(user):
     import hashlib
@@ -81,6 +82,41 @@ class OrderView(APIView): #订单相关业务
             pass
         return JsonResponse(ret)
 
+# class UserInfoSerializer(serializers.Serializer):
+#     username = serializers.CharField()
+#     password = serializers.CharField()
+#     type1 = serializers.CharField(source="user_type")
+#     type2 = serializers.CharField(source="get_user_type_display")
+#     glala = serializers.CharField(source="group.title")
+#     rls = serializers.SerializerMethodField()
+
+#     def get_rls(self,row):
+#         role_obj_list = row.roles.all()
+#         ret = []
+#         for item in role_obj_list:
+#             ret.append ({"id":item.id,"title":item.title})
+#         return ret
+class MyField(serializers.CharField):
+    def to_representation(self,value):
+        return "XXXXX"
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    oooo = serializers.CharField(source="get_user_type_display")
+    rls = serializers.SerializerMethodField()
+    xl = MyField(source="username")
+    class Meta:
+        model = models.UserInfo
+        #fields = "__all__"
+        fields = ["id",'username','password','oooo','rls','group','xl']
+        #extra_kwargs = {'group':{'source':'group.title'},}
+    def get_rls(self,row):
+        role_obj_list = row.roles.all()
+        ret = []
+        for item in role_obj_list:
+            ret.append ({"id":item.id,"title":item.title})
+        return ret
+    
+
 class UserInfoView(APIView): #订单相关业务
     #authentication_classes = [Authtication,]
     #authentication_classes = []
@@ -88,13 +124,11 @@ class UserInfoView(APIView): #订单相关业务
     
     def post(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
-        # token = request._request.GET.get('token')
-        # if not token :
-        #     ret['code'] = 900
-        #     ret['msg'] = '用户没登录'
-        #     return JsonResponse(ret)
+        userinfos  =  models.UserInfo.objects.all()
+        ud = UserInfoSerializer(instance=userinfos,many = True)
+        #dt = LHKit.objects_to_JSON(userinfos)
         try:
-            ret ['data'] = "假装有客户的信息"
+            ret ['data'] = ud.data
 
         except Exception as e:
             pass
@@ -129,6 +163,32 @@ class ParserView(APIView):
     def post(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
         ret ['data'] = request.data['test2']
+        return JsonResponse(ret)
+
+
+class RolesSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    id = serializers.CharField()
+
+
+class RolesView(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    #versioning_class = URLPathVersioning
+    def post(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        #方式1
+        #roles = models.Role.objects.all().values('id' , 'title')
+        #roles = list(roles)
+        #方式2
+        #roles = models.Role.objects.all()
+        #ser = RolesSerializer(instance=roles,many = True)
+
+        #方式3
+        #roles = models.Role.objects.all()
+        #mydata = LHKit.objects_to_JSON(roles)
+
+        ret['data'] = mydata
         return JsonResponse(ret)
 
 
