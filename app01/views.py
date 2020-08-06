@@ -60,6 +60,36 @@ ORDER_DICT = {
         'content':'一条狗'
     }}
 from app01.utils.permission import SVIPPermission,NONSVIPPermission
+class XXvalidator(object):
+    def __init__(self,base):
+        self.base = base
+    def __call__(self,value):
+        if not value.startswith(self.base):
+            message = '标题必须以 %s 开' % self.base
+            raise serializers.ValidationError(message)
+
+class UserGroupSerializer(serializers.Serializer):
+    #title = serializers.CharField(error_messages={'required':'标题不能为空哦'})
+    title = serializers.CharField(error_messages={'required':'标题不能为空哦'},validators=[XXvalidator('老男人'),])
+
+
+
+
+class UserGroupView(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    #versioning_class = URLPathVersioning
+    def post(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        print(request.data)
+        ser = UserGroupSerializer(data=request.data)
+        if ser.is_valid():
+            print (ser.validated_data)
+        else :
+            print (ser.errors)
+
+        ret['data'] = request.data
+        return JsonResponse(ret)
 
 class OrderView(APIView): #订单相关业务
     #authentication_classes = [Authtication,]
@@ -100,21 +130,29 @@ class MyField(serializers.CharField):
     def to_representation(self,value):
         return "XXXXX"
 
+# class UserInfoSerializer(serializers.ModelSerializer):
+#     oooo = serializers.CharField(source="get_user_type_display")
+#     rls = serializers.SerializerMethodField()
+#     xl = MyField(source="username")
+#     class Meta:
+#         model = models.UserInfo
+#         #fields = "__all__"
+#         fields = ["id",'username','password','oooo','rls','group','xl']
+#         #extra_kwargs = {'group':{'source':'group.title'},}
+#     def get_rls(self,row):
+#         role_obj_list = row.roles.all()
+#         ret = []
+#         for item in role_obj_list:
+#             ret.append ({"id":item.id,"title":item.title})
+#         return ret
+
 class UserInfoSerializer(serializers.ModelSerializer):
-    oooo = serializers.CharField(source="get_user_type_display")
-    rls = serializers.SerializerMethodField()
-    xl = MyField(source="username")
+    #group = serializers.HyperlinkedIdentityField(view_name='gp',lookup_field='group_id',lookup_url_kwarg = 'xxx') #生成url 觉得没有用。
     class Meta:
         model = models.UserInfo
         #fields = "__all__"
-        fields = ["id",'username','password','oooo','rls','group','xl']
-        #extra_kwargs = {'group':{'source':'group.title'},}
-    def get_rls(self,row):
-        role_obj_list = row.roles.all()
-        ret = []
-        for item in role_obj_list:
-            ret.append ({"id":item.id,"title":item.title})
-        return ret
+        fields = ['id','username','password','group','roles']
+        depth = 0
     
 
 class UserInfoView(APIView): #订单相关业务
@@ -125,7 +163,7 @@ class UserInfoView(APIView): #订单相关业务
     def post(self,request,*args,**kwargs):
         ret = LHKit.LHResult()
         userinfos  =  models.UserInfo.objects.all()
-        ud = UserInfoSerializer(instance=userinfos,many = True)
+        ud = UserInfoSerializer(instance=userinfos,many = True) #,context = {'request':request})
         #dt = LHKit.objects_to_JSON(userinfos)
         try:
             ret ['data'] = ud.data
@@ -189,6 +227,23 @@ class RolesView(APIView):
         #mydata = LHKit.objects_to_JSON(roles)
 
         ret['data'] = mydata
+        return JsonResponse(ret)
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserGroup
+        fields = "__all__"
+        depth = 0
+
+class GroupView(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    #versioning_class = URLPathVersioning
+    def post(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        pk = request.data["pk"]
+        md = models.UserGroup.objects.filter(pk=pk).first()
+        ret['data'] = GroupSerializer(instance=md,many = False,context= {'request':request}).data
         return JsonResponse(ret)
 
 

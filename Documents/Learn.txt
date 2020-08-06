@@ -1,6 +1,7 @@
 https://www.bilibili.com/video/av28871471?p=25 Django 接口
 
 https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
+11. 生成url 觉得没用 不记录了。 
 10.
     方式1
     roles = models.Role.objects.all().values('id' , 'title')
@@ -14,6 +15,13 @@ https://www.bilibili.com/video/BV1KE41117XV?p=33 flutter
 
     class UserInfoSerializer(serializers.Serializer):
     class UserInfoSerializer(serializers.ModelSerializer):
+
+    class UserInfoSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = models.UserInfo
+            fields = "__all__"
+            depth = 1 # 0~10 or 0~4 
+
 
 9. 解析器
 8. 版本
