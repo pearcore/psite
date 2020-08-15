@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^(?P<ver>[v1|v2|v3]+)/parser/$',views.ParserView.as_view()), 
     url(r'^(?P<ver>[v1|v2|v3]+)/roles/$',views.RolesView.as_view()), 
     url(r'^(?P<ver>[v1|v2|v3]+)/group/(?P<xxx>\d+)$',views.GroupView.as_view(),name='gp'), 
-    url(r'^(?P<ver>[v1|v2|v3]+)/usergroup/$',views.UserGroupView.as_view(),name='ugp')
+    url(r'^(?P<ver>[v1|v2|v3]+)/usergroup/$',views.UserGroupView.as_view(),name='ugp'),
     
-
+    url(r'^(?P<ver>[v1|v2|v3]+)/lhtestapi/$' , views.LHTestApi.as_view()),
 ]

@@ -246,7 +246,18 @@ class GroupView(APIView):
         ret['data'] = GroupSerializer(instance=md,many = False,context= {'request':request}).data
         return JsonResponse(ret)
 
-
+class LHTestApi(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    #versioning_class = URLPathVersioning
+    def post(self,request,*args,**kwargs):
+        ret = LHKit.LHResult()
+        pk = request.data["pk"]
+        userinfos  =  models.UserInfo.objects.all()
+        ud = UserInfoSerializer(instance=userinfos,many = True) #,context = {'request':request})
+        ret ['data'] = ud.data
+        ret['pk'] = pk
+        return JsonResponse(ret)
 
 # from django.shortcuts import render,HttpResponse
 # import json
