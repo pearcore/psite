@@ -21,3 +21,22 @@ class UserToken(models.Model):
 
 class Role(models.Model):
     title = models.CharField(max_length = 32)
+
+from django.contrib.contenttypes.fields import GenericForeignKey,GenericRelation
+from django.contrib.contenttypes.models import ContentType
+
+class Course(models.Model):
+    title = models.CharField(max_length = 32)
+    price_policy_list = GenericRelation("PricePolicy")
+
+class DegreeCourse(models.Model):
+    title = models.CharField(max_length = 32)
+    price_policy_list = GenericRelation("PricePolicy")
+    
+class PricePolicy(models.Model):
+    price = models.IntegerField()
+    period = models.IntegerField()
+
+    content_type = models.ForeignKey(ContentType ,verbose_name='关联的表名称',on_delete= models.CASCADE)
+    object_id = models.IntegerField(verbose_name='关联的表的数据行的ID')
+    content_object = GenericForeignKey('content_type','object_id')

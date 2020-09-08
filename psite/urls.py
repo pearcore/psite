@@ -33,7 +33,8 @@ Including another URLconf
     
 # ]
 from django.conf.urls import url,include
-
+from django.contrib import admin
 urlpatterns = [
+    url(r'admin/', admin.site.urls),
     url(r'app01api/',include('app01.urls')),
 ]

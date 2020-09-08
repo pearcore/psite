@@ -259,6 +259,129 @@ class LHTestApi(APIView):
         ret['pk'] = pk
         return JsonResponse(ret)
 
+from app01.utils.serializsers.pager import PagerSerialiser
+from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination , LimitOffsetPagination,CursorPagination
+class MyPageNumberPagination(PageNumberPagination): # 看第几页,每页多少条.
+    page_size_query_param = "size"
+    max_page_size = 10
+
+
+class Pager1View(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    def get(self,request,*args,**kwargs):
+        roles = models.Role.objects.all()
+        #ser = PagerSerialiser(instance=roles,many = True)
+
+        pg = MyPageNumberPagination()
+
+        pager_roles = pg.paginate_queryset(queryset=roles,request=request,view=self)
+        ser = PagerSerialiser(instance=pager_roles,many = True)
+        ret = LHKit.LHResult()
+        ret["data"] = pg.get_paginated_response(ser.data).data 
+        
+        print(pager_roles)
+        
+        return Response(ret)
+
+from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.mixins import ListModelMixin,CreateModelMixin
+
+class CtTestView(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    def post(self,request,*args,**kwargs):
+        obj1 =  models.DegreeCourse.objects.filter(title='Python全栈').first()
+        models.PricePolicy.objects.create(price=100, period=400,content_object=obj1)
+
+        obj2 =  models.DegreeCourse.objects.filter(title='Python全栈').first()
+        models.PricePolicy.objects.create(price=200, period=500,content_object=obj2)
+
+        obj3 =  models.Course.objects.filter(title='restframework').first()
+        models.PricePolicy.objects.create(price=300, period=600,content_object=obj3)
+
+        ret = LHKit.LHResult()
+        ret["data"] = '成功啦啦啦!'
+        return Response(ret)
+class CtTest2View(APIView):
+    authentication_classes = []
+    throttle_classes = [PSiteIPThrottle]
+    def post(self,request,*args,**kwargs):
+
+        course = models.Course.objects.filter(id=1).first()
+        price_policys = course.price_policy_list.all()
+        print(price_policys)
+
+        ret = LHKit.LHResult()
+        ret["data"] = '!'
+        return Response(ret)
+
+# class View1View(ModelViewSet):
+#     authentication_classes = []
+#     throttle_classes = [PSiteIPThrottle]
+#     queryset = models.Role.objects.all()
+#     serializer_class = PagerSerialiser
+#     pagination_class = MyPageNumberPagination
+#     def retrieve(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         serializer = self.get_serializer(instance)
+#         ret = LHKit.LHResult()
+#         ret['data'] = serializer.data
+#         return Response(ret)
+
+
+# class View1View(ListModelMixin,CreateModelMixin, GenericViewSet):
+#     authentication_classes = []
+#     throttle_classes = [PSiteIPThrottle]
+#     queryset = models.Role.objects.all()
+#     serializer_class = PagerSerialiser
+#     pagination_class = MyPageNumberPagination
+
+#     def post2(self,request,*args,**kwargs):
+#         ret = LHKit.LHResult()
+#         # roles = self.get_queryset()
+#         # pagerRols = self.paginate_queryset(roles)
+#         # ser = self.get_serializer(instance=pagerRols,many=True)
+#         # ret['data'] = self.get_paginated_response(ser.data).data
+#         return Response(ret)
+
+
+# class View1View(GenericViewSet):
+#     authentication_classes = []
+#     throttle_classes = [PSiteIPThrottle]
+#     queryset = models.Role.objects.all()
+#     serializer_class = PagerSerialiser
+#     pagination_class = MyPageNumberPagination
+
+#     def post2(self,request,*args,**kwargs):
+#         ret = LHKit.LHResult()
+#         roles = self.get_queryset()
+#         pagerRols = self.paginate_queryset(roles)
+#         ser = self.get_serializer(instance=pagerRols,many=True)
+#         ret['data'] = self.get_paginated_response(ser.data).data
+#         return Response(ret)
+
+# #GenericAPIView
+# from rest_framework.generics import GenericAPIView
+
+# class View1View(GenericAPIView):
+#     authentication_classes = []
+#     throttle_classes = [PSiteIPThrottle]
+#     queryset = models.Role.objects.all()
+#     serializer_class = PagerSerialiser
+#     pagination_class = MyPageNumberPagination
+
+#     def post(self,request,*args,**kwargs):
+#         ret = LHKit.LHResult()
+#         roles = self.get_queryset()
+#         pagerRols = self.paginate_queryset(roles)
+#         ser = self.get_serializer(instance=pagerRols,many=True)
+#         ret['data'] = self.get_paginated_response(ser.data).data
+#         return Response(ret)
+
 # from django.shortcuts import render,HttpResponse
 # import json
 # from psite.LHStand import LHKit
