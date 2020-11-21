@@ -319,6 +319,8 @@ class CtTest2View(APIView):
         ret["data"] = '!'
         return Response(ret)
 
+    
+
 # class View1View(ModelViewSet):
 #     authentication_classes = []
 #     throttle_classes = [PSiteIPThrottle]

@@ -5,7 +5,7 @@
     
 # ]
 from django.conf.urls import url,include
-from app01 import views
+from app01 import views,views2
 from rest_framework import routers
 
 #router = routers.DefaultRouter()
@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^(?P<ver>[v1|v2|v3]+)/group/(?P<xxx>\d+)$',views.GroupView.as_view(),name='gp'), 
     url(r'^(?P<ver>[v1|v2|v3]+)/usergroup/$',views.UserGroupView.as_view(),name='ugp'),
     url(r'^(?P<ver>[v1|v2|v3]+)/pager1/$',views.Pager1View.as_view()),
+    url(r'webtest/$',views2.index),
     #url(r'^(?P<ver>[v1|v2|v3]+)/view1/$',views.View1View.as_view()),
     # url(r'^(?P<ver>[v1|v2|v3]+)/view1/$',views.View1View.as_view({'get':'list','post':'create'})),
     # #url(r'^(?P<ver>[v1|v2|v3]+)/view1/\.(?P<format>\w+)$',views.View1View.as_view({'get':'list','post':'create'})),

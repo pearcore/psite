@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>test</title>
+        <script>
+            //firstrun()
+            function firstrun () { //调用移动端的方法.
+                var message = {"function":"backLastPage","para":20} // function 是方法标记,后面是方法名称  para 是参数标记,后面的是参数,可以给移动端传过去. 
+                window.webkit.messageHandlers.appInterop.postMessage(message)
+            }
+            function appToCall(item1,item2){ // 被移动端调用把名称约定好,而且移动端可以把参数传过来. 
+                // item1 //item2
+            }
+                
+        </script>
+    </head>
+    <body>
+    <table border="1">
+        <thead>
+        <tr>
+            <td>用户名</td>
+            <td>密码</td>
+        </tr>
+        </thead>
+        {%for line in form%}
+            <tr>
+                <td>{{line.name}}</td>
+                <td>{{line.password}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </body>
+ 
+</html>
