@@ -5,14 +5,15 @@
         <title>test</title>
         <script>
             //firstrun()
-            function firstrun () { //调用移动端的方法.
+            function backback () { //调用移动端的方法.
                 var message = {"function":"backLastPage","para":"20"} // function 是方法标记,后面是方法名称  para 是参数标记,后面的是参数,可以给移动端传过去. 
                 window.webkit.messageHandlers.appInterop.postMessage(message)
             }
-            function appToCallExam(item1,item2){ // 被移动端调用把名称约定好,而且移动端可以把参数传过来. 
+            function appToCallExam(item1,item2,item3,item4,item5,item6,item7,item8,item9){ // 被移动端调用把名称约定好,而且移动端可以把参数传过来. 
                 // item1 //item2
-                document.writeln(item1)
-                document.writeln(item2)
+                
+                document.getElementById('uuu').innerHTML = item1 + "<BR>" + item2 + "<BR>" + item3 + "<BR>" + item4 + "<BR>" + item5 + "<BR>" + item6 + "<BR>" + item7 + "<BR>" + item8 + "<BR>" + item9
+                
             }
                 
         </script>
@@ -32,6 +33,8 @@
             </tr>
         {% endfor %}
     </table>
+    <div id="uuu"></div>
+    <p id='ppp' onclick="backback()">oooooooooo</p>
     </body>
- 
+    
 </html>
