@@ -1,2 +1,0 @@
-# psite
-django test
