@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    #'app01.apps.App01Config'
+    'league.apps.LeagueConfig',
 ]
 
 MIDDLEWARE = [
