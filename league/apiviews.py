@@ -20,7 +20,7 @@ class LoginView(APIView):
                 ret['code'] = 10000
                 ret['msg'] = "登录成功"
                 token = LHKit.md5(user)
-                ret['token'] = token
+                ret['data'] = token
                 #有就更新，没有就创建
                 models.PlayerToken.objects.update_or_create(user=obj,defaults={'token':token})
         except Exception as e:
