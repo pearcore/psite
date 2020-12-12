@@ -123,6 +123,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static") # 新加的
 
-REST_FRAMEWORK = {
 
+REST_FRAMEWORK = {
+    #"DEFAULT_THROTTLE_CLASSES":['league.utils.throttle.PSiteUserThrottle',], 
+    "DEFAULT_THROTTLE_RATES":{
+        "PSiteIPThrottleRate":'20/m',
+        "PSiteUserThrottleRate":'60/m',
+    },
 }
