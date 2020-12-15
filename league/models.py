@@ -8,7 +8,7 @@ class PlayerLogin(models.Model): #登录
     mobile = models.CharField(max_length = 32 , unique=True)
     password = models.CharField(max_length = 64)
     def __str__(self):
-        return self.mobile
+        return PlayerInfo.objects.all().filter(player_login=self.id).first().player_name
 
 class PlayerToken(models.Model): #token
     class Meta:

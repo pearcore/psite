@@ -52,6 +52,13 @@ class TeamListView(APIView):
             ret['msg'] = 'Request abnormal! ' 
         return Response( ret )
 
+from rest_framework import serializers
+class PlayerInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PlayerInfo
+        fields = "__all__"
+        depth = 1 # 0~10 or 0~4 
+
 class PlayerInfoView(APIView):
     authentication_classes = [Authtication]
     throttle_classes = [PSiteUserThrottle]
@@ -60,7 +67,8 @@ class PlayerInfoView(APIView):
         ret = LHKit.LHResult()
         try:
             nowUser = models.PlayerInfo.objects.filter(player_login=request.user.id).first()
-            ret["data"] = LHKit.object_to_JSON(nowUser)
+            jsNowUser = PlayerInfoSerializer(instance=nowUser,many = False)
+            ret["data"] = jsNowUser.data 
         except Exception as e:
             ret['code'] = 900
             ret['msg'] = 'Request abnormal! ' 
