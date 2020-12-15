@@ -12,9 +12,11 @@ class LoginView(APIView):
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
         try:
-            user = request.data["mobile"] #request._request.POST.get('username')
-            password = request.data["password"] #request._request.POST.get('password')
+            user = request.data["mobile"] 
+            password = request.data["password"] 
             obj = models.PlayerLogin.objects.filter(mobile=user,password=password).first()
+            obj2 = models.PlayerInfo.objects.filter(player_login=obj).first()
+            
             if not obj:
                 ret['code'] = 1001 
                 ret['msg'] = "Mobile or Password wrong！"
@@ -22,8 +24,12 @@ class LoginView(APIView):
                 ret['code'] = 10000
                 ret['msg'] = "Login success!"
                 token = LHKit.md5(user)
-                ret['data'] = token
-                #有就更新，没有就创建
+                playerinfo = LHKit.object_to_JSON(obj2)
+                rt = {
+                    'token':token,
+                    'playerinfo':playerinfo,
+                }
+                ret['data'] = rt
                 models.PlayerToken.objects.update_or_create(user=obj,defaults={'token':token})
         except Exception as e:
             ret['code'] = 900
@@ -31,33 +37,31 @@ class LoginView(APIView):
 
         return Response( ret ) 
 
-class ClubListView(APIView): 
+class TeamListView(APIView): 
     authentication_classes = [Authtication]
     throttle_classes = [PSiteUserThrottle]
     #throttle_classes = [Visit2Throttle]
     def post(self, request , *args , **kwargs):
         ret = LHKit.LHResult()
         try:
-            #request.user.id
-
-            leagues  =  models.Club.objects.all().order_by('-points','-goals_for')
-            ret["data"] = LHKit.objects_to_JSON(leagues)
-            # user = request.data["mobile"] #request._request.POST.get('username')
-            # password = request.data["password"] #request._request.POST.get('password')
-            # obj = models.PlayerLogin.objects.filter(mobile=user,password=password).first()
-            # if not obj:
-            #     ret['code'] = 1001 
-            #     ret['msg'] = "Mobile or Password wrong！"
-            # else:
-            #     ret['code'] = 10000
-            #     ret['msg'] = "Login success!"
-            #     token = LHKit.md5(user)
-            #     ret['data'] = token
-            #     #有就更新，没有就创建
-            #     models.PlayerToken.objects.update_or_create(user=obj,defaults={'token':token})
-            
+            nowUser = models.PlayerInfo.objects.filter(player_login=request.user.id).first()
+            teams  =  models.Team.objects.all().filter(league_belong=nowUser.player_league).order_by('-points','-goals_for')
+            ret["data"] = LHKit.objects_to_JSON(teams)
         except Exception as e:
             ret['code'] = 900
             ret['msg'] = 'Request abnormal! ' 
+        return Response( ret )
 
-        return Response( ret ) 
+class PlayerInfoView(APIView):
+    authentication_classes = [Authtication]
+    throttle_classes = [PSiteUserThrottle]
+    #throttle_classes = [Visit2Throttle]
+    def post(self, request , *args , **kwargs):
+        ret = LHKit.LHResult()
+        try:
+            nowUser = models.PlayerInfo.objects.filter(player_login=request.user.id).first()
+            ret["data"] = LHKit.object_to_JSON(nowUser)
+        except Exception as e:
+            ret['code'] = 900
+            ret['msg'] = 'Request abnormal! ' 
+        return Response( ret )

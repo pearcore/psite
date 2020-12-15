@@ -3,5 +3,6 @@ from league import apiviews
 
 urlpatterns = [
     url(r'login/$' , apiviews.LoginView.as_view()),
-    url(r'clublist/$' , apiviews.ClubListView.as_view()),
+    url(r'teamlist/$' , apiviews.TeamListView.as_view()),
+    url(r'playerinfo/$' , apiviews.PlayerInfoView.as_view()),
 ]
