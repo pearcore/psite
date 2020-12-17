@@ -18,10 +18,10 @@ class LoginView(APIView):
             obj2 = models.PlayerInfo.objects.filter(player_login=obj).first()
             
             if not obj:
-                ret['code'] = 1001 
+                ret['code'] = 800 
                 ret['msg'] = "Mobile or Password wrong！"
             else:
-                ret['code'] = 10000
+                ret['code'] = 1000
                 ret['msg'] = "Login success!"
                 token = LHKit.md5(user)
                 playerinfo = LHKit.object_to_JSON(obj2)

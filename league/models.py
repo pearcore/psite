@@ -71,3 +71,11 @@ class PlayerInfo(models.Model): #队员详情
     player_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Team of this player')
     def __str__(self):
         return self.player_name
+
+# class Game(models.Model): #比赛详情
+#     class Meta:
+#         verbose_name = 'Game'
+#         verbose_name_plural = 'Games'
+#     game_time = models.DateTimeField('Birthday',default = timezone.now)
+#     home_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Home Team')
+#     home_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Home Team')
