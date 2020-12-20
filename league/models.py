@@ -72,10 +72,19 @@ class PlayerInfo(models.Model): #队员详情
     def __str__(self):
         return self.player_name
 
-# class Game(models.Model): #比赛详情
+# class Match(models.Model): #比赛详情
 #     class Meta:
-#         verbose_name = 'Game'
-#         verbose_name_plural = 'Games'
-#     game_time = models.DateTimeField('Birthday',default = timezone.now)
+#         verbose_name = 'Match'
+#         verbose_name_plural = 'Matches'
+#     match_time = models.DateTimeField('MatchTime',default = timezone.now)
 #     home_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Home Team')
-#     home_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Home Team')
+#     away_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Away Team')
+#     is_gameover = models.BooleanField(default=False)
+#     home_team_score = models.IntegerField(default=0)
+#     away_team_score = models.IntegerField(default=0)
+#     match_round = models.IntegerField(default=0)
+#     match_number_this_round = models.IntegerField(default=0)
+#     match_number_this_league = models.IntegerField(default=0)
+
+
+    
