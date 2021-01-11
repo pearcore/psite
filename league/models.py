@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import time
 # Create your models here.
 class PlayerLogin(models.Model): #登录
     class Meta:
@@ -42,13 +43,13 @@ class Team(models.Model): #联赛中的队伍
         verbose_name_plural = 'Teams' 
 
     team_name = models.CharField(max_length = 64,default="")
-    kit1_color = models.CharField(max_length = 32, default="ffffff")
-    kit2_color = models.CharField(max_length = 32,default="000000")
+    kit1_color = models.CharField(max_length = 32, default="ff0000")
+    kit2_color = models.CharField(max_length = 32,default="0000ff")
     win = models.IntegerField(default=0)
     lost = models.IntegerField(default=0)
     draw = models.IntegerField(default=0)
     goals_for = models.IntegerField(default=0)
-    goals_aginst = models.IntegerField(default=0)
+    goals_against = models.IntegerField(default=0)
     points = models.IntegerField(default=0)
 
     league_belong = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name='League of this team')
@@ -72,19 +73,29 @@ class PlayerInfo(models.Model): #队员详情
     def __str__(self):
         return self.player_name
 
-# class Match(models.Model): #比赛详情
-#     class Meta:
-#         verbose_name = 'Match'
-#         verbose_name_plural = 'Matches'
-#     match_time = models.DateTimeField('MatchTime',default = timezone.now)
-#     home_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Home Team')
-#     away_team = models.ForeignKey(Team, null=True,on_delete=models.SET_NULL, verbose_name='Away Team')
-#     is_gameover = models.BooleanField(default=False)
-#     home_team_score = models.IntegerField(default=0)
-#     away_team_score = models.IntegerField(default=0)
-#     match_round = models.IntegerField(default=0)
-#     match_number_this_round = models.IntegerField(default=0)
-#     match_number_this_league = models.IntegerField(default=0)
+class Match(models.Model): #比赛详情
+    class Meta:
+        verbose_name = 'Match'
+        verbose_name_plural = 'Matches'
+    match_time = models.DateTimeField('MatchTime',default = timezone.now)
+    location = models.CharField(max_length = 64,default="", verbose_name='Location')
+    is_gameover = models.BooleanField(default=False)
 
+    home_team = models.ForeignKey(Team,related_name='hometeam', null=True,on_delete=models.SET_NULL, verbose_name='Home Team')
+    away_team = models.ForeignKey(Team,related_name='awayteam', null=True,on_delete=models.SET_NULL, verbose_name='Away Team')
+
+    home_team_kit_color = models.CharField(max_length = 32, default="ff0000")
+    away_team_kit_color = models.CharField(max_length = 32,default="0000ff")
+
+    home_team_score = models.IntegerField(default=0)
+    away_team_score = models.IntegerField(default=0)
+
+    match_round = models.IntegerField(default=0)
+    match_number_this_round = models.IntegerField(default=0)
+    match_number_this_league = models.IntegerField(default=0)
+
+    remarks = models.CharField(max_length = 512,default="",blank=True)
+    def __str__(self):
+        return  "Game:" + str(self.id) + "->" + self.match_time.strftime("%Y-%m-%d %H:%M:%S") + " " + self.home_team.team_name + " VS " + self.away_team.team_name
 
     

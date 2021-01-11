@@ -6,6 +6,9 @@ from league import models
 from league.utils.throttle import PSiteIPThrottle,PSiteUserThrottle
 from league.utils.auth import Authtication
 
+from django.utils import timezone
+import time,datetime
+
 class LoginView(APIView): 
     authentication_classes = []
     throttle_classes = [PSiteIPThrottle]
@@ -69,6 +72,31 @@ class PlayerInfoView(APIView):
             nowUser = models.PlayerInfo.objects.filter(player_login=request.user.id).first()
             jsNowUser = PlayerInfoSerializer(instance=nowUser,many = False)
             ret["data"] = jsNowUser.data 
+        except Exception as e:
+            ret['code'] = 900
+            ret['msg'] = 'Request abnormal! ' 
+        return Response( ret )
+
+class MatchesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Match
+        fields = "__all__"
+        depth = 1 # 0~10 or 0~4 
+
+class MatchesListView(APIView):
+    authentication_classes = [Authtication]
+    throttle_classes = [PSiteUserThrottle]
+    def post(self, request , *args , **kwargs):
+        ret = LHKit.LHResult()
+
+        try:
+            nowUser = models.PlayerInfo.objects.filter(player_login=request.user.id).first()
+            startTime = timezone.now()
+            stEndtime = request.data["endtime"]
+            endtime = timezone.datetime.strptime(stEndtime, '%Y-%m-%d %H:%M:%S')
+            matches  =  models.Match.objects.all().filter(is_gameover=False,match_time__range=(startTime,endtime) ).order_by('match_time')
+            jsMatches = MatchesSerializer(instance=matches,many= True)
+            ret["data"] = jsMatches.data
         except Exception as e:
             ret['code'] = 900
             ret['msg'] = 'Request abnormal! ' 
