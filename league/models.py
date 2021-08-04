@@ -55,6 +55,8 @@ class Team(models.Model): #联赛中的队伍
     league_belong = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name='League of this team')
     players = models.ManyToManyField("PlayerLogin",default=[])
 
+    game_played = models.IntegerField(default=0)
+
     def __str__(self):
         return self.team_name
 
